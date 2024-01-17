@@ -17,7 +17,9 @@ Goals of this lab
 * Understand how to create threads and user processes.
 * Understand how to implement scheduler and context switch.
 * Understand what's preemption.
+* Understand how to implement the waiting mechanism.
 * Understand how to implement POSIX signals.
+
 
 ##########
 Background
@@ -50,17 +52,16 @@ Moreover, they want each executing program to be isolated and has its identity, 
 To achieve this, the operating system maintains multiple isolated execution instances called processes.
 A process can only access the resource it owns.
 If it needs additional resources, it invokes the corresponding system calls.
-The kernel then checks the capabilities of the process and only provides the resource if the process has the access rights.
+The kernel then checks the capabilities of the process and only provides the resource if the process has the access right.
 
 MMU-less
 --------
 
 In general, programs that directly run machine code on the CPU are isolated by virtual memory.
-However, we won't enable the MMU in this lab, 
+However, we don't enable the MMU in this lab, 
 so we can't prevent illegal memory access and we can't use the same virtual address for different processes.
 If you want to execute multiple programs, please use different linker scripts for different programs 
 and load them to different addresses to prevent overlapping.
-If your program calls fork, the program shouldn't use global variables, dynamic allocation, indirect storage, etc, since the storage will be corrupted.
 
 Run Queue and Wait Queue
 ========================
@@ -113,12 +114,8 @@ hence it's more complex to enable kernel preemption.
 Basic Exercises
 ###############
 
-.. warning::
-
-  You won't need to demonstrate the test component in Basic 1 and 2 if you can execute the test program successfully in Video Player.
-
-Basic Exercise 1 - Thread - 10%
-===============================
+Basic Exercise 1 - Thread
+=========================
 
 In this part, you need to implement the creation, switch, and recycling of threads.
 
@@ -205,7 +202,7 @@ Therefore, the finished thread only removes itself from the run queue,
 releases freeable resources, sets its state to be dead,
 and waits for someone to recycle the remaining stuff.
 
-In UNIX-like operating systems, the parent thread is accountable for recycling its zombie child.
+In UNIX-like operating systems, the recycler is another thread that creates the zombie thread(parent).
 The parent can also get the status code from the zombie child's data structure as useful information.
 In this lab, you can let the idle thread do the jobs to simplify the implementation.
 When the idle thread is scheduled, it checks if there is any zombie thread.
@@ -249,21 +246,54 @@ Expected result: multiple threads print the content interleaved.
 
   Implement the thread mechanism.
 
-Basic Exercise 2 - User Process and System Call - 30%
-=====================================================
+Basic Exercise 2 - User Process and System Call
+===============================================
 
 In this part, you need to implement the basic user process mechanism such as system calls and user preemption.
 
-Trap Frame
------------
 
-The registers are saved at the top of the kernel stack when a user process throws an exception and enters kernel mode. The registers are loaded before returning to user mode. The trap frame is the name given to the saved material.
-The kernel will not affect the trap frame in normal exception handling (e.g., page fault, interrupt), so the user process will not be aware that it has entered kernel mode. When it comes to system calls, however, the user software expects the kernel to take care of it.
-The program uses the general-purpose registers to set the arguments and receive the return value, just like conventional function calls. The kernel can then read the trap frame to acquire the user's parameters and write it to set the return value and error code.
+Arguments Passing
+------------------
+In the previous lab, your kernel could already load a user program and get system calls from it.
+In this lab, you need to add the arguments passing into the program loader,
+so you can create a process with different arguments.
+
+.. image:: images/argv.svg
+
+As shown in the above image, you can put the strings, pointers to the strings, and the number of arguments on the user stack's top.
+Meanwhile, set the user's stack pointer to the corresponding address, so a user program can find the passed arguments.
+
+After that, you can create multiple threads with different arguments to run multiple user processes.
+
+.. code:: python
+
+    def init():
+        exec("init", ["init", "arg1"] )
+
+    init_thread = Thread(init)
+
+.. warning::
+    Be aware of the alignment problem when setting the user stack, unaligned access on rpi3 will cause an exception.
 
 System Calls
 -------------
-In the previous lab, the `svc` instruction allowed your user program to trap to the kernel. In this lab, you'll learn how arguments and return values are transmitted between user and kernel modes. In order to develop simple user programs, you'll also need to implement some fundamental system calls.
+In the previous lab, your user program could already trap to the kernel by the ``svc`` instruction.
+In this lab, you need to know how the arguments and return value is passed across the user mode and the kernel mode.
+Also, you need to implement some basic system calls so you can write simple user programs.
+
+Trap Frame
+^^^^^^^^^^^
+When a user process takes an exception and enters kernel mode,
+the registers are saved at the kernel stack's top.
+Before returning to the user mode, the registers are loaded.
+The saved content is called the trap frame.
+
+In regular exception handling(e.g. page fault, interrupt), 
+the kernel won't touch the trap frame, so the user process won't notice that it entered the kernel mode.
+However, in the case of system calls, the user program expects that the kernel does something for it.
+
+As regular function calls, the program sets the arguments and gets the return value by accessing the general-purpose registers.
+Then, the kernel can read the trap frame to get the user's arguments and write the trap frame to set the return value and the error code.
 
 Required System Calls
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -274,196 +304,181 @@ int getpid()
   Get current process's id.
 
 size_t uart_read(char buf[], size_t size)
-  Return the number of bytes read by reading size byte into the user-supplied buffer buf.
+  Read **size** byte to user-provided buffer **buf** and return the how many bytes read.
 
 size_t uart_write(const char buf[], size_t size)
-  Return the number of bytes written after writing size byte from the user-supplied buffer buf.
+  Write **size** byte from user-provided buffer **buf** and return the how many bytes written.
 
-int exec(const char\* name, char \*const argv[])
-  Run the program with parameters.
+**int exec(const char* name, char *const argv[])**
+  Execute the program with arguments.
 
-.. admonition:: Note
-
-  In this lab, you won't have to deal with argument passing, but you can still use it.
-
-int fork()
-  The standard method of duplicating the current process in UNIX-like operating systems is to use fork(). Following the call to fork(), two processes run the same code. Set the parent process's return value to the child's id and the child process's return value to 0 to distinguish them.
-
-void exit()
+**void exit()**
   Terminate the current process.
 
-int mbox_call(unsigned char ch, unsigned int \*mbox)
-  Get the hardware's information by mailbox
+In addition, ``fork()`` is the classic way of UNIX-like operating systems to duplicate the current process.
+You also need to implement it so a process can create another process.
+After invoking ``fork()``, two processes are executing the same code.
+To distinguish them, please set the return value of the parent process to the child's id and set the child process's return value to 0.
 
-void kill(int pid)
-  Other processes identified by pid should be terminated.
+Note that, we don't enable the MMU, so the two processes are more like two threads now.
+Please duplicate the content of the parent stack to the child's and don't use global variables.
 
-.. admonition:: Note
+User Preemption
+----------------
 
-  You don't need to implement this system call if you prefer to kill a process using the POSIX Signal stated in Advanced Exercise 1.
-
-.. warning::
-
-  To execute the test program in Video Player, make sure your system calls match the guidelines below.
-
-System Call Format in Video Player's Test Program
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-* The svc function will be called via a system call: `svc 0`
-* When calling the svc function
-    * The arguments would be stored in x0, x1, x2, ...
-    * Return value would be stored in x0
-    * The system call numbers given below would be stored in x8 
-        * 0: int getpid()
-        * 1: size_t uartread(char buf[], size_t size)
-        * 2: size_t uartwrite(const char buf[], size_t size)
-        * 3: int exec(const char \*name, char \*const argv[])
-        * 4: int fork()
-        * 5: void exit(int status)
-        * 6: int mbox_call(unsigned char ch, unsigned int \*mbox)
-        * 7: void kill(int pid)
-
-Kernel Preemption
------------------
-
-It's worth noting that you can only disable preemption or interrupts when absolutely essential. Your kernel should always be preemptible at other times.
+To implement user preemption, at the end of EL0 to EL1 exception handling,
+the kernel should check if the current thread should be switched out(e.g. its time slice is used up).
+If yes, call the ``schedule()`` to switch to the next thread.
 
 Test
-----
+-----
 
-.. warning::
+Please test your implementation with the following code or equivalent logic code in the demo.
 
-  Please test your implementation using the code below or equivalent logic code, but you **must output the stack pointer**. This test should work in exception level 0.
+Expected result: 
+
+1. argv_test prints the arguments,
+2. fork_test's pid should be the same as argv_test,
+3. fork_test's parent should print correct child pid, 
+4. fork_test's child should start execution at the correct location.
+5. All processes should exit properly.
+
+argv_test.c
 
 .. code:: c
 
-  void fork_test(){
-      printf("\nFork Test, pid %d\n", get_pid());
-      int cnt = 1;
-      int ret = 0;
-      if ((ret = fork()) == 0) { // child
-          long long cur_sp;
-          asm volatile("mov %0, sp" : "=r"(cur_sp));
-          printf("first child pid: %d, cnt: %d, ptr: %x, sp : %x\n", get_pid(), cnt, &cnt, cur_sp);
-          ++cnt;
-          
-          if ((ret = fork()) != 0){
-              asm volatile("mov %0, sp" : "=r"(cur_sp));
-              printf("first child pid: %d, cnt: %d, ptr: %x, sp : %x\n", get_pid(), cnt, &cnt, cur_sp);
-          }
-          else{
-              while (cnt < 5) {
-                  asm volatile("mov %0, sp" : "=r"(cur_sp));
-                  printf("second child pid: %d, cnt: %d, ptr: %x, sp : %x\n", get_pid(), cnt, &cnt, cur_sp);
-                  delay(1000000);
-                  ++cnt;
-              }
-          }
-          exit();
-      } 
-      else {
-          printf("parent here, pid %d, child %d\n", get_pid(), ret);
-      }
-  }
+    int main(int argc, char **argv) {
+        printf("Argv Test, pid %d\n", getpid());
+        for (int i = 0; i < argc; ++i) {
+            puts(argv[i]);
+        }
+        char *fork_argv[] = {"fork_test", 0};
+        exec("fork_test", fork_argv);
+    }
 
 
-Video Player - 40%
-==================
+fork_test.c
 
-In order to test the correctness of your previous implementation, we create a user program that runs only if your kernel behaves as expected.
+.. code:: c
 
-Timer 
------
-
-Enable the core timer interrupt. Schedule the pending threads when the core timer interrupts.
-
-.. admonition:: Note
-
-  Set the expired time as core timer frequency shift right 5 bits.
-
-User Program
-------------
-
-Load the :download:`user program <initramfs.cpio>` to your kernel and execute it. The system call you defined above would be used by the user program.
-
-This test program will access cpu timer register, please add this code or equivilant logic to your timer initialize code
-
-.. code-block:: c
-
-  uint64_t tmp;
-  asm volatile("mrs %0, cntkctl_el1" : "=r"(tmp));
-  tmp |= 1;
-  asm volatile("msr cntkctl_el1, %0" : : "r"(tmp));
-
-.. important::
-
-  Obviously, the user program should run in el0.
+    int main(void) {
+        printf("Fork Test, pid %d\n", getpid());
+        int cnt = 1;
+        int ret = 0;
+        if ((ret = fork()) == 0) { // child
+            printf("pid: %d, cnt: %d, ptr: %p\n", getpid(), cnt, &cnt);
+            ++cnt;
+            fork();
+            while (cnt < 5) {
+                printf("pid: %d, cnt: %d, ptr: %p\n", getpid(), cnt, &cnt);
+                delay(1000000);
+                ++cnt;
+            }
+        } else {
+            printf("parent here, pid %d, child %d\n", getpid(), ret);
+        }
+    }
 
 
-.. admonition:: Note
+kernel code
 
-  The user application requires a display output, so make sure your qemu has one and that your Raspberry Pi is connected to an HDMI monitor.
-  If everything goes well, you'll enter a shell generated by the user program and you could type `fork` to start a child thread.
+.. code:: c
 
-A snapshot of the user program:
+    void user_test(){
+        char* argv[] = {"argv_test", "-o", "arg2", 0};
+        exec("argv_test", argv);
+    }
 
-.. image:: images/lab5_help.png
+    void kernel_main() {
+        // ...
+        // boot setup
+        // ...
+        thread_create(user_test);
+        idle();
+    }
 
 .. admonition:: Todo
 
-  You should be able to switch back and forth between shell and the child thread every time the timer interrupts, enabling you to type commands while the child thread continues to perform its work.
-
-.. warning::
-
-  Only if you can run our test program fluently will you receive all the points; otherwise, even though you implemented the system call correctly, you will receive no points in this section.
-
+  Implement related mechanisms of the user process.
 
 ##################
 Advanced Exercises
 ##################
 
+Advanced Exercise 1 - Wait Queue
+================================
 
-Advanced Exercise 1 - POSIX Signal - 30%
-========================================
+Implement the APIs as below example pseudocode, so each resource can declare its wait queue.
+Also, a thread can suspend itself and wait until the resource is ready.
 
-The POSIX signal is an asynchronous method of inter-process communication. When a user process gets a signal, it calls a default or registered signal handler.
+.. code:: python
+
+    wait_queue = WaitQueue()
+
+    def block_read():
+        while nonblock_read() == Again:
+            wait_queue.wait()
+
+    def handler():
+        # ...
+        wait_queue.wake_up()
+
+Besides, use the wait queue APIs to implement ``sleep()`` and blocking API of ``uart_read()``.
+The current thread suspends itself and waits for the events to wake it up.
+
+.. admonition:: Todo
+
+  Implement ``sleep()`` and ``uart_read()`` by wait queues.
+
+Advanced Exercise 2 - Kernel Preemption
+=======================================
+
+To implement kernel preemption, at the end of EL1 interrupt handling, 
+the kernel should check if the current thread should be switched out(e.g. its time slice is used up).
+If yes, call the ``schedule()`` to switch to the next thread.
+
+Note that, you are only allowed to disable preemption or interrupts when it's necessary.
+At other moments, your kernel should always be preemptible.
+
+.. admonition:: Todo
+
+  Implement kernel preemption.
+
+Advanced Exercise 3 - POSIX Signal
+==================================
+
+POSIX signal is an asynchronous inter-process communication mechanism.
+A user process runs a default or registered signal handler when it receives a signal like the interrupt handling.
+
+You need to implement the ``kill(pid, signal)`` system call, so a process sends signals to any process.
+Meanwhile, you need to implement the default signal handler for SIGINT and SIGKILL(terminate the process).
+Next, You need to implement the ``signal(signal, handler)`` system call, so a user program can register its function as the signal's handler.
+
 
 Implementation
 ----------------
 
-One alternative method is for the kernel to check for outstanding signals before returning the process to user mode. If the answer is yes, the kernel executes the appropriate handler.
+One possible implementation is that the kernel checks if there is any pending signal before the process returns to the user mode.
+If yes, the kernel runs the corresponding handler.
 
-The default signal handlers can be finished in kernel mode. The registered signal handlers, on the other hand, should be run in user mode. Furthermore, while performing the handler, the user process may enter kernel mode again owing to another system call or interrupt. As a result, before running the handler, you should save the original context. When the handler completes, the kernel restores the context so that the original execution can proceed.
+The default signal handlers can be finished in kernel mode.
+On the contrary, the registered signal handlers should be run in the user mode.
+Furthermore, the user process may enter the kernel mode again due to another system call or interrupt while running the handler.
+Therefore, you should save the original context before executing the handler.
+After the handler finishes, the kernel restores the context to continue the original execution.
 
-The process is still in user mode after the handler finishes and returns. The kernel can set the handler's return address(lr) to a chunk of code containing the sigreturn() system call to force it into kernel mode and indicate that it has already completed. Following that, the kernel recognizes that the handler is complete and restores the prior context.
+After the handler finishes and returns, it's still in the user mode.
+To make it enter the kernel mode and indicates that it has already finished,
+the kernel can set the handler's return address(``lr``) to a piece of code containing the ``sigreturn()`` system call.
+Then after executing it, the kernel knows that the handler is done and restores the previous context.
 
-Finally, during execution, the handler requires a user stack. The kernel should allocate a new stack for the handler and then recycle it after it completes. It's also possible for the kernel to attach the process's prior user context and sigreturn() to it.
-
+Lastly, the handler needs a user stack during its execution.
+The kernel should allocate another stack for the handler and recycle it after the handler finishes.
+The kernel can also put the process's previous user context and ``sigreturn()`` on it.
 
 .. note::
-  The case of nested registered signal handlers does not need to be handled.
-
+    You don't need to handle the case of nested registered signal handlers.
 
 .. admonition:: Todo
 
   Implement POSIX signal.
-
-.. warning:: 
-
-  * Your user-registered handler must be in user mode.
-  * Our test program could also apply to your POSIX signal implementation. You should test your implementation in this part with our user program, if your signal handler can only work in your own testcase, you will only receive at most half of the points of this part.
-  * You should copy the user-registered handler when program calls fork
-
-To meet our standards, please follow the guidelines below :
-In order to let a process send transmit signals to any other process, you must implement the `kill(pid, signal)` system call. Meanwhile, you must implement the SIGKILL default signal handler (terminate the process). The signal(signal, handler) system call must then be implemented so that a user program can register its function as the signal's handler.
-
-signal(int SIGNAL, void (\*handler)())
-  * system call number: 8
-
-kill(int pid, int SIGNAL)
-  * system call number: 9
-
-SIGKILL = 9
-
-You can simply type `register` in shell to register a handler provided by us while running our test program. Similarly, you can use the command `signal_kill {tid}` to indicate which thread you want to terminate.
-

@@ -35,7 +35,7 @@ Translating a virtual address to a physical address involves levels of translati
 ARMv8-A has 2 to 4 levels of translation for different page sizes and the second stage translation for hypervisors. (not used in labs)
 
 We name each level as in Linux.
-The top-level is the page global directory (PGD) followed by the page upper directory (PUD), page middle directory (PMD), and page table entry(PTE).
+The top-level is the page global directory (PGD) followed by page upper directory (PUD), page middle directory (PMD), and page table entry(PTE).
 
 Page v.s. Page Frame v.s. Page Table
 ------------------------------------
@@ -53,7 +53,7 @@ Page's Descriptor
 =================
 
 As mentioned earlier, each entry of a page table points to the next level page table, a block, or a page.
-The entry is combined with the page frame's physical address and attributes of the region.
+The entry is combined with the page frame physical address and attributes of the region.
 
 We list the necessary content for you.
 
@@ -76,7 +76,7 @@ Descriptor's Format(simplified)
   +-----+------------------------------+---------+--+
        47                              n         2  0
 
-  Entry of PTE which points to a page
+  Entry of PTE which point to a page
 
   +-----+------------------------------+---------+--+
   |     |  page's physical address     |attribute|11|
@@ -133,8 +133,8 @@ In the 64-bit virtual memory system, the upper address space is usually for kern
 .. image:: images/mem_layout.png
 
 .. note::
-  The entire accessible physical address could be linearly mapped to offset 0xffff_0000_0000_0000 for kernel access in the labs.
-  It simplifies the design.
+  The entire accessible physical address could be linearly mapped by to offset 0xffff_0000_0000_0000 for kernel access in the labs.
+  It simplfies the design.
 
 Configuration
 =============
@@ -149,12 +149,10 @@ To keep everything simple, the following configuration is specified for this lab
 * The page granule size is 4KB.
 * Not use address space ID (ASID).
 
-.. image:: images/lab6_48bit.jpg
-
 Reference
 =========
 
-So far, we have briefly introduced the concept of virtual memory and ARMv8-A virtual memory system architecture.
+So far, we briefly introduce the concept of virtual memory and ARMv8-A virtual memory system architecture.
 For details, you can refer to 
 
 * `ARMv8-A Address Translation <https://developer.arm.com/documentation/100940/0101>`_
@@ -164,8 +162,8 @@ For details, you can refer to
 Basic Exercises
 ###############
 
-Basic Exercise 1 - Virtual Memory in Kernel Space - 10%
-=======================================================
+Basic Exercise 1 - Virtual Memory in Kernel Space
+=================================================
 
 We provide a step-by-step tutorial to guide you to make your original kernel works with virtual memory.
 However, we only give the essential explanation in each step.
@@ -290,13 +288,13 @@ Hence, you only need
   orr x3, x2, x3 
   str x3, [x1, 8] // 2nd 1GB mapped by the 2nd entry of PUD
 
-  msr ttbr0_el1, x0 // load PGD to the bottom translation-based register.
+  msr ttbr0_el1, x0 // load PGD to the bottom translation based register.
 
   mrs x2, sctlr_el1
   orr x2 , x2, 1
   msr sctlr_el1, x2 // enable MMU, cache remains disabled
 
-If you setup correctly, your kernel should work as before.
+If you set up correctly, your kernel should work as before.
 
 .. admonition:: Todo
 
@@ -319,7 +317,7 @@ Now, you need to modify your linker script to make your kernel's symbols in the 
   }
 
 After the kernel is re-built and loaded, load the identity paging's PGD to ``ttbr1_el1``.
-Next, enable the MMU and use an indirect branch to the virtual address.
+Next, enable the MMU and using an indirect branch to the virtual address.
 Then, the CPU is running your kernel in the upper address space.
 
 .. code:: c
@@ -343,7 +341,7 @@ Then, the CPU is running your kernel in the upper address space.
   Modify the linker script, and map the kernel space.
 
 .. note::
-  If there is a hard-coded address(e.g. IO address) in your kernel, you should also set it to the upper address space.
+  If there is hard-coded address(e.g. IO address) in your kernel, you should also set it to the upper address space.
 
 Finer Granularity Paging
 ------------------------
@@ -351,17 +349,17 @@ Finer Granularity Paging
 The granularity of two-level translation is 1GB.
 In the previous setting, all memory regions are mapped as device memory.
 
-However, unaligned access to device memory causes alignment exceptions and the compiler sometimes generates unaligned access.
+However, unaligned access of device memory causes alignment exception and the compiler sometimes generates unaligned access.
 Hence, you should map most of the RAM as normal memory and MMIO region as device memory.
 
-Then, you should use three-level translation(2MB) or four-level translation(4KB) for linear mapping.
+Then, you should use three level translation(2MB) or four level translation(4KB) for linear mapping.
 
 .. admonition:: Todo
 
   Linear map kernel with finer granularity and map RAM as normal memory.
 
-Basic Exercise 2 - Virtual Memory in User Space - 30%
-=====================================================
+Basic Exercise 2 - Virtual Memory in User Space
+===============================================
 
 PGD Allocation
 --------------
@@ -374,50 +372,30 @@ Map the User Space
 
 Same as kernel space mapping, you need to iteratively fill in the entries of page tables from PGD -> PUD -> PMD -> PTE.
 
-In this lab, we recommand you to use a iteration-based method to implement the page mapping function.
 During this process, the next level page tables such as PUD, PMD, and PTE may not already present.
 You should allocate one page frame to be used as the next level page table.
 Then, fill the page frame's entries to map the virtual address.
 
-Here is the brief example:
-
-.. code-block:: c 
-
-  pte *walk(pagetable pagetable, uint64_t va, int alloc) {
-    for (int level = 3; level > 0; level--) {
-      pte *pte = ...;
-      if (*pte is a entry) {
-        pagetable = *pte;
-      } else {
-        pagetable = alloc_page();
-        memset(pagetable, 0, 0x1000);
-        *pte = ...;
-      }
-    }
-    return ...;
-  }
-
 .. admonition:: Todo
 
-  Implement function like ``mappages(pagetable pagetable, uint64_t va, uint64_t size, uint64_t pa, ...)`` and use it to map user's code at 0x0 and stack regions at 0xffffffffb000 ~ 0xfffffffff000(4 pages).
+  Implement user space paging.
 
 .. note::
-
   You should use 4KB pages for user processes in this lab, so you need PGD, PUD, PMD, and PTE for four-layer translation.
 
 
-Revisit Syscalls
-^^^^^^^^^^^^^^^^
+Revisit Fork and Exec
+^^^^^^^^^^^^^^^^^^^^^
 
 In lab 5, different user programs used different linker scripts to prevent address overlapping.
 Also, the child process can't use the same user stack address as the parent.
 
 With virtual memory, the same virtual address can be mapped to different physical addresses.
-Therefore, you can revisit ``fork()``, ``exec()`` ans ``mbox_call`` with virtual memory to solve the problems mentioned above.
+Therefore, you can to revisit ``fork()`` and ``exec()`` with virtual memory to solve the problems mentioned above.
 
 .. admonition:: Todo
 
-  Revisit syscalls to map the same virtual address to different physical addresses for different processes.
+  Revisit ``fork()`` and ``exec()`` to map the same virtual address to different physical addresses for different processes.
 
 Context Switch
 --------------
@@ -442,25 +420,47 @@ Also, a TLB invalidation is needed because the old values are staled.
   Set ``ttbr0_el1`` to switch the address space in context switches.
 
 
-Video Player - 40%
-==================
+Simple Page Fault Handler
+-------------------------
 
-In order to test the correctness of your previous implementation, we create a :download:`user program <vm.img>` that runs only if your kernel behaves as expected.
+When the CPU accesses a non-mapped address, a page fault exception is taken.
+You should **print the fault address** store in ``far_el1`` in the kernel mode and **terminate the user process**.
 
-.. admonition:: Note
+.. admonition:: Todo
 
-   The user program uses all syscalls in previous lab.
+  Implement a simple page fault handler.
 
-.. warning::
+Test
+====
 
-  Only if you can run our test program fluently will you receive all the points; otherwise, even though you implemented the system call correctly, you will receive no points in this section.
+Please test your implementation with the following code or equivalent logic code in the demo.
+
+test.c
+
+.. code:: c
+
+  int main(void) {
+    int cnt = 0;
+    if(fork() == 0) {
+      fork();
+      fork();
+      while(cnt < 10) {
+        printf("pid: %d, sp: 0x%llx cnt: %d\n", getpid(), &cnt, cnt++); // address should be the same, but the cnt should be increased indepndently
+        delay(1000000);
+      }
+    } else {
+      int* a = 0x0; // a non-mapped address.
+      printf("%d\n", *a); // trigger simple page fault.
+      printf("Should not be printed\n");
+    }
+  }
 
 ##################
 Advanced Exercises
 ##################
 
-Advanced Exercise 1 - Mmap - 10%
-================================
+Advanced 1 - Mmap
+=================
 
 ``mmap()`` is the system call to create memory regions for a user process.
 Each region can be mapped to a file or anonymous page(the page frames not related to any file) with different protection.
@@ -470,63 +470,219 @@ Besides, the kernel can also use it for implementing the program loader.
 Memory regions such as .text and .data can be created by **memory-mapped files**.
 Memory regions such as **.bss** and **user stack** can be created by **anonymous page mapping**.
 
-.. admonition:: Note
-
-   Because we don't have an ELF file for memory-mapped files, you only need to implement the anonymous page mapping in this Lab.
-
 API Specification
 -----------------
 
 (void*) mmap(void* addr, size_t len, int prot, int flags, int fd, int file_offset)
   The kernel uses **addr** and **len** to create a new valid region for the current process.
 
-  * If addr is NULL, the kernel decides the new region’s start address
+    * If **addr** is NULL, the kernel decides the new region's start address
 
-  * If addr is not NULL
+    * If **addr** is not NULL
 
-    * If the new region overlaps with existing regions, or addr is not page-aligned, the kernel takes addr as a hint and decides the new region’s start address.
+        * If the new region **overlaps** with existing regions, or **addr** is **not page-aligned**
 
-    * Otherwise, the kernel uses addr as the new region’s start address.
+          * If MAP_FIXED is set, ``mmap()`` is failed
 
-  * The memory region created by mmap() should be page-aligned, if the len is not multiple of the page size, the kernel rounds it up.
+          * Otherwise, the kernel takes **addr** as a hint and decides the new region's start address.
+
+        * Otherwise, the kernel uses **addr** as the new region's start address.
+
+    * The memory region created by ``mmap()`` should be page-aligned, if the **len** is not multiple of the page size, the kernel rounds it up.
 
 
   **prot** is the region's access protection
 
-    * PROT_NONE : 0, not accessible
+    * PROT_NONE : not accessible
 
-    * PROT_READ : 1, readable
+    * PROT_READ : readable
 
-    * PROT_WRITE : 2, writable
+    * PROT_WRITE : writable
 
-    * PROT_EXEC : 4, executable
+    * PROT_EXEC : executable
 
   The following **flags** should be implemented
 
+    * MAP_FIXED: New region's start should be **addr**, otherwise the ``mmap()`` fails.
+
     * MAP_ANONYMOUS: New region is mapped to anonymous page. It's usually used for stack and heap.
 
-    * MAP_POPULATE: After ``mmap()``, it directly does region_map. (You don't have to implement it if you implement demand paging)
+    * MAP_POPULATE: After ``mmap()``, it directly does :ref:`region_map`. (You don't have to implement it if you implement demand paging)
 
+  **fd** is the mapped file's file descriptor..
+
+  The new region's is mapped to the **file_offset** of the mapped file.
+    
+    * The file_offset should be page-aligned.
+
+.. note::
+  * You don't need to handle the case that the new region overlaps existing regions.
+
+  * We use memory mapped files for the ELF loader. If you don't implement ELF loader, you don't need to implement **fd**, **file_offset**, and **MAP_FIXED**.
+
+
+
+.. _region_map:
 
 Region Page Mapping
 -------------------
 
-If the user specifies MAP_POPULATE in the mmap() call. The kernel should create the page mapping for the newly created region.
+If the user specifies MAP_POPULATE in the ``mmap()`` call.
+The kernel should create the page mapping for the newly created region.
 
 * If the region is mapped to anonymous pages
 
-    1. Allocate page frames.
+  1. Allocate page frames.
 
-    2. Map the region to page frames, and set the page attributes according to region’s protection policy.
+  2. Map the region to page frames, and set the page attributes according to region's protection policy.
+
+* If the region is mapped to a file
+
+  1. Allocate page frames.
+
+  2. Map the region to page frames, and set the page attributes according to region's protection policy.
+
+  3. Copy the file's content to the memory region.
+
+Tests
+-----
+
+Please test your implementation with the following code or equivalent logic code in the demo.
+
+illegal_read.c
+
+.. code:: c
+
+  int main(void) {
+    char* ptr = mmap(0x1000, 4096, PROT_READ, MAP_ANONYMOUS, -1, 0);
+    printf("addr: %llx\n", ptr);
+    printf("%d\n", ptr[1000]); // should be 0
+    printf("%d\n", ptr[4097]); // should be segfault
+  }
+
+illegal_write.c
+
+.. code:: c
+
+  int main() {
+    char* ptr = mmap(NULL, 4096, PROT_READ, MAP_ANONYMOUS, -1, 0);
+    printf("addr: %llx\n", ptr);
+    printf("%d\n", ptr[1000]); // should be 0
+    ptr[0] = 1; // should be seg fault
+    printf("%d\n", ptr[0]); // not reached
+  }
 
 .. admonition:: Todo
 
-  Implement system call mmap, syscall number: 10.
+  Implement ``mmap()``.
 
 
+.. _ELF:
 
-Advanced Exercise 2 - Page Fault Handler & Demand Paging - 10%
-==============================================================
+Advanced Exercise 2 - ELF Loader
+================================
+
+In this part, you need to implement an ELF loader to replace the raw binary loader.
+
+ELF Parsing
+-----------
+
+The difference between raw binary and ELF is the header.
+You can get segments information by parsing the ELF file's header
+
+To implement an ELF loader, you only need to care about the ELF header and the program headers.
+The following are struct members you need to use for loading a statically linked ELF.
+
+ELF Header
+^^^^^^^^^^
+
+* **e_entry**: The ELF's entry point, you need to set user exception return address to it.
+
+* **e_phoff**: The offset of program headers from ELF's file start. 
+
+* **e_phnum**: The number of program headers
+
+Program Header
+^^^^^^^^^^^^^^
+
+* **p_type**: The type of program header, you only need to care about PT_LOAD (LOAD segments).
+
+* **p_vaddr**: The virtual address should be loaded to.
+
+* **p_offset**: The offset to start of ELF. 
+
+* **p_align**: **p_vaddr** :math:`\equiv` **p_offset** (mod **p_align**) 
+
+* **p_filesz**: The file size, contains .text, .data, etc.
+
+* **p_memsz**: The memory size of the segment. It usually equals **p_filesz**. If the segment contains .bss, it should be larger than **p_filesz**
+
+* **p_flags**: The extra flags, you only need to care about rwx.
+
+
+.. note::
+  Don't confuse the **p_offset** with **file_offset** in ``mmap()``. **p_offset** may not be page-aligned. 
+
+  Don't confuse the **p_vaddr** with **addr** in ``mmap()``. **p_vaddr** may not be page-aligned. 
+
+.. admonition:: Todo
+
+  Parse the ELF header. 
+
+.. hint:: 
+  You can check the correctness by readelf -l <your ELF> on linux
+
+ELF reference
+^^^^^^^^^^^^^
+
+* https://en.wikipedia.org/wiki/Executable_and_Linkable_Format
+
+ELF mapping
+-----------
+
+You can use ``mmap()`` to create regions for the ELF file according to the LOAD segments in program headers.
+
+In general, you can use 
+:code:`mmap(p_vaddr, p_filesz, p_flags, MAP_FIXED | MAP_POPULATE, bin_start, p_offset); // MAP_POPULATE can be removed if you implement demand paging`
+to create memory regions, and :ref:`region_map` can do the mapping and copying jobs for you.
+
+However, there are some cases you need to care about:
+
+p_memsz > p_filesz
+^^^^^^^^^^^^^^^^^^
+
+It usually happens in .bss and .data are in one LOAD segment, or .bss has its own LOAD segment.
+In this case, **.data** should still **map to the ELF file** but **.bss** should **map to anonymous page frames** by setting MAP_ANONYMOUS because it's not backed by the ELF file.
+
+If unfortunately, **.bss and .data are in the same segment** and their **boundary is at the middle of a page frame**.
+You should 
+
+1. Do the same thing as normal file mapping region as in :ref:`region_map`
+
+2. Initialize the part of the page frame that belongs to .bss to 0.
+
+.. note::
+  If you implement demand paging, you should pre-fault on the .data and .bss boundary and make .bss's head 0 initialized.
+
+p_vaddr and p_offset are not page aligned
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The region created by ``mmap`` should be page aligned.
+With the MAP_FIXED flag, some parameters need to be modified
+
+* **addr** should be set to **p_vaddr** - (**p_vaddr** MOD **page_size**)
+
+* **file_offset** should be set to **p_offset** - (**p_offset** MOD **page_size**)
+
+* **len** should be set to **p_filesz** + (**p_offset** MOD **page_size**)
+
+.. admonition:: Todo
+
+  Implement ELF mapping.
+
+
+Page Fault Handler & Demand Paging
+==================================
 
 The page frames are pre-allocated in the previous parts.
 However, user program might allocate a huge space on heap or memory mapped files without using it.
@@ -543,26 +699,14 @@ When a page fault is generated,
 
 * If it's part of one region, 
   
-  Follow region_map but only map **one page frame**. for the fault address.
-
-
-.. admonition:: Note
-
-  To justify the correctness, you should print the log of each fault; here's an brief example.
-
-.. code-block:: c
-
-  // For Translation fault
-  printf("[Translation fault]: %x\n", addr);
-  // For Segmentation fault
-  printf("[Segmentation fault]: Kill Process\n");
+  Follow :ref:`region_map` but only map **one page frame**. for the fault address.
 
 .. admonition:: Todo
 
   Implement demand paging.
 
-Advanced Exercise 3 - Copy on Write - 10%
-=========================================
+Advanced Exercise 4 - Copy on Write
+===================================
 
 When a process call ``fork()`` to create a child process,
 the kernel needs to copy all the page frames owned by the parent in the previous implementation.
@@ -595,14 +739,9 @@ Check the region's permission in the address space.
   * The kernel should allocate a page frame, copy the data, and modify the table's entry to be correct permission.
 
 .. note::
-
   ``fork()`` may be executed many times, so page frames may be shared by many children and one parent.
   Hence, you need a reference count for each page frame.
   And you should not reclaim the page frame if there is still someone referring to it.
-
-.. warning::
-
-   Remember to remap the chlid process' mailbox memory in fork(); our user program should still work under the copy-on-write policy.
 
 .. admonition:: Todo
 

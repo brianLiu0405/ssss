@@ -32,7 +32,7 @@ Background
 ##########
 
 Reserved Memory
-================
+===============
 
 After rpi3 is booted, some physical memory is already in use.
 For example, there are already spin tables for multicore boot(``0x0000 - 0x1000``), flatten device tree,
@@ -49,7 +49,7 @@ A dynamic memory allocator should be able to reuse the memory block for another 
 Reserved or allocated memory should not be allocated again to prevent data corruption.
 
 Page Frame Allocator
-======================
+====================
 
 You may be wondering why you are asked to implement another memory allocator for page frames.
 Isn't a well-designed dynamic memory allocator enough for all dynamic memory allocation cases?
@@ -199,8 +199,8 @@ Advanced Exercises
 
 .. _startup_alloc:
 
-Advanced Exercise 1 - Efficient Page Allocation - 10%
-=====================================================
+Advanced 1 - Efficient Page Allocation - 10%
+============================================
 
 Basically, when you dynamically assign or free a page, your buddy system's response time should be as quick as feasible.
 In the basic part, we only care about the correctness of your implementation, but in this section, you must devise a technique to access the page frame node in constant time.
@@ -209,26 +209,26 @@ In the basic part, we only care about the correctness of your implementation, bu
 
     You should allocate and free a page in O(logn).
 
-Advanced Exercise 2 - Reserved Memory - 10%
-===========================================
+Advanced 2 - Reserved Memory - 10%
+==================================
 
 As previously noted in the background, when rpi3 is booted, some physical memory is already in use, not allocable memory blocks must be marked. 
 In this task, you should design an API to reserve specific locations.
 
 The following code is a brief example:
 
-.. code:: c
+.. code-block:: c
 
   void memory_reserve(start, end) {
-      //…
+      // …
   }
 
 .. admonition:: Todo
 
    Design an API to reserve memory blocks.
 
-Advanced Exercise 3 - Startup Allocation - 20%
-==============================================
+Advanced 3 - Startup Allocation - 20%
+=====================================
 In general purpose operating systems, the amount of physical memory is determined at runtime. Hence, a kernel needs to dynamically allocate its page frame array for its page frame allocator. The page frame allocator then depends on dynamic memory allocation. The dynamic memory allocator depends on the page frame allocator. This introduces the chicken or the egg problem. To break the dilemma, you need a dedicated startup allocator during startup time.
 
 The design of the startup allocator is quite simple. Simply implement a dynamic memory allocator not based on the page allocator, i.e., you can use the simple allocator designed in Lab2 as the initial startup allocator. 

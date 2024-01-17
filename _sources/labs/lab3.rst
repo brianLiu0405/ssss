@@ -149,8 +149,8 @@ Hence, you should either
 Basic Exercises
 ###############
 
-Basic Exercise 1 - Exception  - 30%
-===================================
+Basic Exercise 1 - Exception 
+============================
 
 Exception Level Switch
 ----------------------
@@ -195,7 +195,7 @@ You need to prepare a function as a user program and add a command to your shell
 
 .. admonition:: Todo
 
-    Add a command that can load a user program in the initramfs. Then, use eret to jump to the start address.
+    Add a command that can execute a user program by using ``eret`` to jump to the start address.
 
 .. hint::
     You can use QEMU and GDB to check if you do it correctly.
@@ -349,8 +349,8 @@ You can use the following code to save registers before entering the kernel and 
 
     Save the user program's context before executing the exception handler.
 
-Basic Exercise 2 - Interrupt - 10%
-==================================
+Basic Exercise 2 - Interrupt
+============================
 
 Core Timer Interrupt
 ---------------------
@@ -400,8 +400,27 @@ You can use the following code to enable the core timer's interrupt.
 
     You can get the seconds after booting from the count of the timer(``cntpct_el0``) and the frequency of the timer(``cntfrq_el0``).
 
-Basic Exercise 3 - Rpi3's Peripheral Interrupt - 30%
-====================================================
+##################
+Advanced Exercises
+##################
+
+In the advanced part, it's required to enable interrupts in EL1.
+You can only disable interrupts to protect the critical sections.
+You can use the following code to enable/disable interrupts.
+
+.. code-block:: c
+
+  // enable interrupt
+  msr DAIFClr, 0xf
+  // disable interrupt
+  msr DAIFSet, 0xf
+
+.. important::
+
+    This part is the **dependency** of the following advanced parts, but it doesn't count in your score.
+
+Advanced Exercise 1 - Rpi3's Peripheral Interrupt 
+=================================================
 
 In this advanced part, you need to implement rpi3's mini UART's interrupt handling.
 Then, you don't have to busy-polling the UART device.
@@ -437,28 +456,8 @@ The shell reads the bytes array from the buffer and gets the number of bytes it 
 
     You don't have to replace all print functions with the asynchronous version.
 
-##################
-Advanced Exercises
-##################
-
-In the advanced part, it's required to enable interrupts in EL1.
-You can only disable interrupts to protect the critical sections.
-You can use the following code to enable/disable interrupts.
-
-.. code-block:: c
-
-  // enable interrupt
-  msr DAIFClr, 0xf
-  // disable interrupt
-  msr DAIFSet, 0xf
-
-.. important::
-
-    This part is the **dependency** of the following advanced parts, but it doesn't count in your score.
-
-
-Advanced Exercise 1 - Timer Multiplexing - 20%
-==============================================
+Advanced Exercise 2 - Timer Multiplexing
+========================================
 
 Timers can be used to do periodic jobs such as scheduling and journaling and one-shot executing such as sleeping and timeout.
 However, the number of hardware timers is limited.
@@ -507,8 +506,8 @@ It prints MESSAGE after SECONDS with the current time and the command executed t
 
    You can implement this exercise with exception to modify privileged registers or just run your program in EL1.
 
-Advanced Exercise 2 - Concurrent I/O Devices Handling 20%
-=========================================================
+Advanced Exercise 3 - Concurrent I/O Devices Handling
+=====================================================
 
 The kernel needs to handle a lot of I/O devices at the same time.
 For devices(e.g. UART) that have a short period of process time, 
