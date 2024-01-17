@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Lab 3: Exception and Interrupt &#8212; IOC5213: Operating System Capstone</title>
+    <title>Lab 3: Exception and Interrupt &#8212; IOC5226: Operating System Capstone</title>
   
   
   
@@ -28,18 +28,18 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=7be6f599" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
 
-    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/documentation_options.js?v=fb0c83f7"></script>
+    <script src="../_static/doctools.js?v=a6d80eb4"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=bf317847"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'labs/lab3';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -135,7 +135,7 @@
   
   
   
-    <p class="title logo__title">IOC5213: Operating System Capstone</p>
+    <p class="title logo__title">IOC5226: Operating System Capstone</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -153,7 +153,6 @@
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Class:</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../class/schedule.html">Schedule</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../class/staff.html">Staff</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Labs:</span></p>
@@ -167,7 +166,7 @@
 <li class="toctree-l1"><a class="reference internal" href="lab5.html">Lab 5: Thread and User Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lab6.html">Lab 6: Virtual Memory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lab7.html">Lab 7: Virtual File System</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lab8.html">File System Meets Hardware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lab8.html">Lab 8: Non-volatile Storage</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="hardware/index.html">Hardware</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="hardware/asm.html">The Assembly You Need</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hardware/mailbox.html">Mailbox</a></li>
@@ -344,7 +343,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercises">Basic Exercises</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-1-exception">Basic Exercise 1 - Exception</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-1-exception-30">Basic Exercise 1 - Exception  - 30%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exception-level-switch">Exception Level Switch</a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#el2-to-el1">EL2 to EL1</a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#el1-to-el0">EL1 to EL0</a></li>
@@ -357,21 +356,21 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-2-interrupt">Basic Exercise 2 - Interrupt</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-2-interrupt-10">Basic Exercise 2 - Interrupt - 10%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#core-timer-interrupt">Core Timer Interrupt</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercises">Advanced Exercises</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-1-rpi3-s-peripheral-interrupt">Advanced Exercise 1 - Rpi3’s Peripheral Interrupt</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-3-rpi3-s-peripheral-interrupt-30">Basic Exercise 3 - Rpi3’s Peripheral Interrupt - 30%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-mini-uart-s-interrupt">Enable mini UART’s Interrupt.</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#determine-the-interrupt-source">Determine the Interrupt Source</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#asynchronous-read-and-write">Asynchronous Read and Write</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-2-timer-multiplexing">Advanced Exercise 2 - Timer Multiplexing</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-3-concurrent-i-o-devices-handling">Advanced Exercise 3 - Concurrent I/O Devices Handling</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercises">Advanced Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-1-timer-multiplexing-20">Advanced Exercise 1 - Timer Multiplexing - 20%</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-2-concurrent-i-o-devices-handling-20">Advanced Exercise 2 - Concurrent I/O Devices Handling 20%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#decouple-the-interrupt-handlers">Decouple the Interrupt Handlers</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-interrupt">Nested Interrupt</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#preemption">Preemption</a></li>
@@ -517,8 +516,8 @@ Hence, you should either</p>
 </section>
 <section id="basic-exercises">
 <h2>Basic Exercises<a class="headerlink" href="#basic-exercises" title="Link to this heading">#</a></h2>
-<section id="basic-exercise-1-exception">
-<h3>Basic Exercise 1 - Exception<a class="headerlink" href="#basic-exercise-1-exception" title="Link to this heading">#</a></h3>
+<section id="basic-exercise-1-exception-30">
+<h3>Basic Exercise 1 - Exception  - 30%<a class="headerlink" href="#basic-exercise-1-exception-30" title="Link to this heading">#</a></h3>
 <section id="exception-level-switch">
 <h4>Exception Level Switch<a class="headerlink" href="#exception-level-switch" title="Link to this heading">#</a></h4>
 <section id="el2-to-el1">
@@ -557,7 +556,7 @@ You need to prepare a function as a user program and add a command to your shell
 </ol>
 <div class="admonition-todo admonition">
 <p class="admonition-title">Todo</p>
-<p>Add a command that can execute a user program by using <code class="docutils literal notranslate"><span class="pre">eret</span></code> to jump to the start address.</p>
+<p>Add a command that can load a user program in the initramfs. Then, use eret to jump to the start address.</p>
 </div>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
@@ -707,8 +706,8 @@ Otherwise, it may be corrupted.</p>
 </section>
 </section>
 </section>
-<section id="basic-exercise-2-interrupt">
-<h3>Basic Exercise 2 - Interrupt<a class="headerlink" href="#basic-exercise-2-interrupt" title="Link to this heading">#</a></h3>
+<section id="basic-exercise-2-interrupt-10">
+<h3>Basic Exercise 2 - Interrupt - 10%<a class="headerlink" href="#basic-exercise-2-interrupt-10" title="Link to this heading">#</a></h3>
 <section id="core-timer-interrupt">
 <h4>Core Timer Interrupt<a class="headerlink" href="#core-timer-interrupt" title="Link to this heading">#</a></h4>
 <p>Rpi3’s each CPU core has its core timer.
@@ -755,24 +754,8 @@ You can do it by setting <code class="docutils literal notranslate"><span class=
 </div>
 </section>
 </section>
-</section>
-<section id="advanced-exercises">
-<h2>Advanced Exercises<a class="headerlink" href="#advanced-exercises" title="Link to this heading">#</a></h2>
-<p>In the advanced part, it’s required to enable interrupts in EL1.
-You can only disable interrupts to protect the critical sections.
-You can use the following code to enable/disable interrupts.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// enable interrupt</span>
-<span class="n">msr</span><span class="w"> </span><span class="n">DAIFClr</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf</span>
-<span class="c1">// disable interrupt</span>
-<span class="n">msr</span><span class="w"> </span><span class="n">DAIFSet</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf</span>
-</pre></div>
-</div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>This part is the <strong>dependency</strong> of the following advanced parts, but it doesn’t count in your score.</p>
-</div>
-<section id="advanced-exercise-1-rpi3-s-peripheral-interrupt">
-<h3>Advanced Exercise 1 - Rpi3’s Peripheral Interrupt<a class="headerlink" href="#advanced-exercise-1-rpi3-s-peripheral-interrupt" title="Link to this heading">#</a></h3>
+<section id="basic-exercise-3-rpi3-s-peripheral-interrupt-30">
+<h3>Basic Exercise 3 - Rpi3’s Peripheral Interrupt - 30%<a class="headerlink" href="#basic-exercise-3-rpi3-s-peripheral-interrupt-30" title="Link to this heading">#</a></h3>
 <p>In this advanced part, you need to implement rpi3’s mini UART’s interrupt handling.
 Then, you don’t have to busy-polling the UART device.</p>
 <section id="enable-mini-uart-s-interrupt">
@@ -804,8 +787,24 @@ The shell reads the bytes array from the buffer and gets the number of bytes it 
 </div>
 </section>
 </section>
-<section id="advanced-exercise-2-timer-multiplexing">
-<h3>Advanced Exercise 2 - Timer Multiplexing<a class="headerlink" href="#advanced-exercise-2-timer-multiplexing" title="Link to this heading">#</a></h3>
+</section>
+<section id="advanced-exercises">
+<h2>Advanced Exercises<a class="headerlink" href="#advanced-exercises" title="Link to this heading">#</a></h2>
+<p>In the advanced part, it’s required to enable interrupts in EL1.
+You can only disable interrupts to protect the critical sections.
+You can use the following code to enable/disable interrupts.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// enable interrupt</span>
+<span class="n">msr</span><span class="w"> </span><span class="n">DAIFClr</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf</span>
+<span class="c1">// disable interrupt</span>
+<span class="n">msr</span><span class="w"> </span><span class="n">DAIFSet</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This part is the <strong>dependency</strong> of the following advanced parts, but it doesn’t count in your score.</p>
+</div>
+<section id="advanced-exercise-1-timer-multiplexing-20">
+<h3>Advanced Exercise 1 - Timer Multiplexing - 20%<a class="headerlink" href="#advanced-exercise-1-timer-multiplexing-20" title="Link to this heading">#</a></h3>
 <p>Timers can be used to do periodic jobs such as scheduling and journaling and one-shot executing such as sleeping and timeout.
 However, the number of hardware timers is limited.
 Therefore, the kernel needs a software mechanism to multiplex the timer.</p>
@@ -848,8 +847,8 @@ The printing order is determined by the command executed time and the user-speci
 <p>You can implement this exercise with exception to modify privileged registers or just run your program in EL1.</p>
 </div>
 </section>
-<section id="advanced-exercise-3-concurrent-i-o-devices-handling">
-<h3>Advanced Exercise 3 - Concurrent I/O Devices Handling<a class="headerlink" href="#advanced-exercise-3-concurrent-i-o-devices-handling" title="Link to this heading">#</a></h3>
+<section id="advanced-exercise-2-concurrent-i-o-devices-handling-20">
+<h3>Advanced Exercise 2 - Concurrent I/O Devices Handling 20%<a class="headerlink" href="#advanced-exercise-2-concurrent-i-o-devices-handling-20" title="Link to this heading">#</a></h3>
 <p>The kernel needs to handle a lot of I/O devices at the same time.
 For devices(e.g. UART) that have a short period of process time,
 the kernel can finish their handlers immediately right after they’re ready.
@@ -971,7 +970,7 @@ If there are higher priority tasks, execute the highest priority task.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercises">Basic Exercises</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-1-exception">Basic Exercise 1 - Exception</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-1-exception-30">Basic Exercise 1 - Exception  - 30%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exception-level-switch">Exception Level Switch</a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#el2-to-el1">EL2 to EL1</a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#el1-to-el0">EL1 to EL0</a></li>
@@ -984,21 +983,21 @@ If there are higher priority tasks, execute the highest priority task.</p>
 </li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-2-interrupt">Basic Exercise 2 - Interrupt</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-2-interrupt-10">Basic Exercise 2 - Interrupt - 10%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#core-timer-interrupt">Core Timer Interrupt</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercises">Advanced Exercises</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-1-rpi3-s-peripheral-interrupt">Advanced Exercise 1 - Rpi3’s Peripheral Interrupt</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-3-rpi3-s-peripheral-interrupt-30">Basic Exercise 3 - Rpi3’s Peripheral Interrupt - 30%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-mini-uart-s-interrupt">Enable mini UART’s Interrupt.</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#determine-the-interrupt-source">Determine the Interrupt Source</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#asynchronous-read-and-write">Asynchronous Read and Write</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-2-timer-multiplexing">Advanced Exercise 2 - Timer Multiplexing</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-3-concurrent-i-o-devices-handling">Advanced Exercise 3 - Concurrent I/O Devices Handling</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercises">Advanced Exercises</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-1-timer-multiplexing-20">Advanced Exercise 1 - Timer Multiplexing - 20%</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-2-concurrent-i-o-devices-handling-20">Advanced Exercise 2 - Concurrent I/O Devices Handling 20%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#decouple-the-interrupt-handlers">Decouple the Interrupt Handlers</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nested-interrupt">Nested Interrupt</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#preemption">Preemption</a></li>

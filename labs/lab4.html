@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Lab 4: Allocator &#8212; IOC5213: Operating System Capstone</title>
+    <title>Lab 4: Allocator &#8212; IOC5226: Operating System Capstone</title>
   
   
   
@@ -28,18 +28,18 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=7be6f599" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
 
-    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/documentation_options.js?v=fb0c83f7"></script>
+    <script src="../_static/doctools.js?v=a6d80eb4"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=bf317847"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'labs/lab4';</script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">IOC5213: Operating System Capstone</p>
+    <p class="title logo__title">IOC5226: Operating System Capstone</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -154,7 +154,6 @@
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Class:</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../class/schedule.html">Schedule</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../class/staff.html">Staff</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Labs:</span></p>
@@ -168,7 +167,7 @@
 <li class="toctree-l1"><a class="reference internal" href="lab5.html">Lab 5: Thread and User Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lab6.html">Lab 6: Virtual Memory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lab7.html">Lab 7: Virtual File System</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lab8.html">File System Meets Hardware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lab8.html">Lab 8: Non-volatile Storage</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="hardware/index.html">Hardware</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="hardware/asm.html">The Assembly You Need</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hardware/mailbox.html">Mailbox</a></li>
@@ -355,9 +354,9 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercises">Advanced Exercises</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-1-efficient-page-allocation-10">Advanced 1 - Efficient Page Allocation - 10%</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-2-reserved-memory-10">Advanced 2 - Reserved Memory - 10%</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-3-startup-allocation-20">Advanced 3 - Startup Allocation - 20%</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-1-efficient-page-allocation-10">Advanced Exercise 1 - Efficient Page Allocation - 10%</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-2-reserved-memory-10">Advanced Exercise 2 - Reserved Memory - 10%</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-3-startup-allocation-20">Advanced Exercise 3 - Startup Allocation - 20%</a></li>
 </ul>
 </li>
 </ul>
@@ -538,8 +537,8 @@ The allocator can use it to determine the memory pool the chunk belonged to when
 </section>
 <section id="advanced-exercises">
 <h2>Advanced Exercises<a class="headerlink" href="#advanced-exercises" title="Link to this heading">#</a></h2>
-<section id="advanced-1-efficient-page-allocation-10">
-<span id="startup-alloc"></span><h3>Advanced 1 - Efficient Page Allocation - 10%<a class="headerlink" href="#advanced-1-efficient-page-allocation-10" title="Link to this heading">#</a></h3>
+<section id="advanced-exercise-1-efficient-page-allocation-10">
+<span id="startup-alloc"></span><h3>Advanced Exercise 1 - Efficient Page Allocation - 10%<a class="headerlink" href="#advanced-exercise-1-efficient-page-allocation-10" title="Link to this heading">#</a></h3>
 <p>Basically, when you dynamically assign or free a page, your buddy system’s response time should be as quick as feasible.
 In the basic part, we only care about the correctness of your implementation, but in this section, you must devise a technique to access the page frame node in constant time.</p>
 <div class="admonition-todo admonition">
@@ -547,13 +546,13 @@ In the basic part, we only care about the correctness of your implementation, bu
 <p>You should allocate and free a page in O(logn).</p>
 </div>
 </section>
-<section id="advanced-2-reserved-memory-10">
-<h3>Advanced 2 - Reserved Memory - 10%<a class="headerlink" href="#advanced-2-reserved-memory-10" title="Link to this heading">#</a></h3>
+<section id="advanced-exercise-2-reserved-memory-10">
+<h3>Advanced Exercise 2 - Reserved Memory - 10%<a class="headerlink" href="#advanced-exercise-2-reserved-memory-10" title="Link to this heading">#</a></h3>
 <p>As previously noted in the background, when rpi3 is booted, some physical memory is already in use, not allocable memory blocks must be marked.
 In this task, you should design an API to reserve specific locations.</p>
 <p>The following code is a brief example:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">memory_reserve</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">// …</span>
+<span class="w">    </span><span class="c1">//…</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -562,8 +561,8 @@ In this task, you should design an API to reserve specific locations.</p>
 <p>Design an API to reserve memory blocks.</p>
 </div>
 </section>
-<section id="advanced-3-startup-allocation-20">
-<h3>Advanced 3 - Startup Allocation - 20%<a class="headerlink" href="#advanced-3-startup-allocation-20" title="Link to this heading">#</a></h3>
+<section id="advanced-exercise-3-startup-allocation-20">
+<h3>Advanced Exercise 3 - Startup Allocation - 20%<a class="headerlink" href="#advanced-exercise-3-startup-allocation-20" title="Link to this heading">#</a></h3>
 <p>In general purpose operating systems, the amount of physical memory is determined at runtime. Hence, a kernel needs to dynamically allocate its page frame array for its page frame allocator. The page frame allocator then depends on dynamic memory allocation. The dynamic memory allocator depends on the page frame allocator. This introduces the chicken or the egg problem. To break the dilemma, you need a dedicated startup allocator during startup time.</p>
 <p>The design of the startup allocator is quite simple. Simply implement a dynamic memory allocator not based on the page allocator, i.e., you can use the simple allocator designed in Lab2 as the initial startup allocator.
 Startup allocation, on the other hand, is the procedure to record the start address and size of the allocated and reserved blocks in the array. Your startup allocation should be able to reserve memory for the buddy system, kernel, initramfs, etc. In the end, it hands the physical memory to the buddy system. The buddy system should mark the reserved segment as allocated</p>
@@ -664,9 +663,9 @@ Startup allocation, on the other hand, is the procedure to record the start addr
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercises">Advanced Exercises</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-1-efficient-page-allocation-10">Advanced 1 - Efficient Page Allocation - 10%</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-2-reserved-memory-10">Advanced 2 - Reserved Memory - 10%</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-3-startup-allocation-20">Advanced 3 - Startup Allocation - 20%</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-1-efficient-page-allocation-10">Advanced Exercise 1 - Efficient Page Allocation - 10%</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-2-reserved-memory-10">Advanced Exercise 2 - Reserved Memory - 10%</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-3-startup-allocation-20">Advanced Exercise 3 - Startup Allocation - 20%</a></li>
 </ul>
 </li>
 </ul>

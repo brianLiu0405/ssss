@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Lab 6: Virtual Memory &#8212; IOC5213: Operating System Capstone</title>
+    <title>Lab 6: Virtual Memory &#8212; IOC5226: Operating System Capstone</title>
   
   
   
@@ -28,18 +28,18 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=7be6f599" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
 
-    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/documentation_options.js?v=fb0c83f7"></script>
+    <script src="../_static/doctools.js?v=a6d80eb4"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=bf317847"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'labs/lab6';</script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">IOC5213: Operating System Capstone</p>
+    <p class="title logo__title">IOC5226: Operating System Capstone</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -154,7 +154,6 @@
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Class:</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../class/schedule.html">Schedule</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../class/staff.html">Staff</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Labs:</span></p>
@@ -168,7 +167,7 @@
 <li class="toctree-l1"><a class="reference internal" href="lab5.html">Lab 5: Thread and User Process</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Lab 6: Virtual Memory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lab7.html">Lab 7: Virtual File System</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lab8.html">File System Meets Hardware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lab8.html">Lab 8: Non-volatile Storage</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="hardware/index.html">Hardware</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="hardware/asm.html">The Assembly You Need</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hardware/mailbox.html">Mailbox</a></li>
@@ -347,7 +346,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercises">Basic Exercises</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-1-virtual-memory-in-kernel-space">Basic Exercise 1 - Virtual Memory in Kernel Space</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-1-virtual-memory-in-kernel-space-10">Basic Exercise 1 - Virtual Memory in Kernel Space - 10%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#translation-control-register-tcr">Translation Control Register (TCR)</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-attribute-indirection-register-mair">Memory Attribute Indirection Register (MAIR)</a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#brief-introduction">Brief Introduction</a></li>
@@ -359,42 +358,26 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#finer-granularity-paging">Finer Granularity Paging</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-2-virtual-memory-in-user-space">Basic Exercise 2 - Virtual Memory in User Space</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-2-virtual-memory-in-user-space-30">Basic Exercise 2 - Virtual Memory in User Space - 30%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pgd-allocation">PGD Allocation</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#map-the-user-space">Map the User Space</a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#revisit-fork-and-exec">Revisit Fork and Exec</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#revisit-syscalls">Revisit Syscalls</a></li>
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#context-switch">Context Switch</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-page-fault-handler">Simple Page Fault Handler</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test">Test</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#video-player-40">Video Player - 40%</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercises">Advanced Exercises</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-1-mmap">Advanced 1 - Mmap</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-1-mmap-10">Advanced Exercise 1 - Mmap - 10%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#api-specification">API Specification</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#region-page-mapping">Region Page Mapping</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tests">Tests</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-2-elf-loader">Advanced Exercise 2 - ELF Loader</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#elf-parsing">ELF Parsing</a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#elf-header">ELF Header</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#program-header">Program Header</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#elf-reference">ELF reference</a></li>
-</ul>
-</li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#elf-mapping">ELF mapping</a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#p-memsz-p-filesz">p_memsz &gt; p_filesz</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#p-vaddr-and-p-offset-are-not-page-aligned">p_vaddr and p_offset are not page aligned</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#page-fault-handler-demand-paging">Page Fault Handler &amp; Demand Paging</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-4-copy-on-write">Advanced Exercise 4 - Copy on Write</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-2-page-fault-handler-demand-paging-10">Advanced Exercise 2 - Page Fault Handler &amp; Demand Paging - 10%</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-3-copy-on-write-10">Advanced Exercise 3 - Copy on Write - 10%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#on-fork-a-new-process">On Fork a New Process</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#when-either-children-or-parent-write-to-that-page">When Either Children or Parent Write to that Page</a></li>
 </ul>
@@ -439,7 +422,7 @@ set up the address spaces for the kernel and user processes to achieve process i
 <p>Translating a virtual address to a physical address involves levels of translation.
 ARMv8-A has 2 to 4 levels of translation for different page sizes and the second stage translation for hypervisors. (not used in labs)</p>
 <p>We name each level as in Linux.
-The top-level is the page global directory (PGD) followed by page upper directory (PUD), page middle directory (PMD), and page table entry(PTE).</p>
+The top-level is the page global directory (PGD) followed by the page upper directory (PUD), page middle directory (PMD), and page table entry(PTE).</p>
 </section>
 <section id="page-v-s-page-frame-v-s-page-table">
 <h4>Page v.s. Page Frame v.s. Page Table<a class="headerlink" href="#page-v-s-page-frame-v-s-page-table" title="Link to this heading">#</a></h4>
@@ -453,7 +436,7 @@ In this documentation, PGD, PUD, PMD, and PTE are all called page tables.</p>
 <section id="page-s-descriptor">
 <h3>Page’s Descriptor<a class="headerlink" href="#page-s-descriptor" title="Link to this heading">#</a></h3>
 <p>As mentioned earlier, each entry of a page table points to the next level page table, a block, or a page.
-The entry is combined with the page frame physical address and attributes of the region.</p>
+The entry is combined with the page frame’s physical address and attributes of the region.</p>
 <p>We list the necessary content for you.</p>
 <section id="descriptor-s-format-simplified">
 <h4>Descriptor’s Format(simplified)<a class="headerlink" href="#descriptor-s-format-simplified" title="Link to this heading">#</a></h4>
@@ -471,7 +454,7 @@ Entry of PUD, PMD which point to a block
 +-----+------------------------------+---------+--+
      47                              n         2  0
 
-Entry of PTE which point to a page
+Entry of PTE which points to a page
 
 +-----+------------------------------+---------+--+
 |     |  page&#39;s physical address     |attribute|11|
@@ -521,8 +504,8 @@ then the kernel is automatically not executable in that region no matter what th
 <img alt="../_images/mem_layout.png" src="../_images/mem_layout.png" />
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The entire accessible physical address could be linearly mapped by to offset 0xffff_0000_0000_0000 for kernel access in the labs.
-It simplfies the design.</p>
+<p>The entire accessible physical address could be linearly mapped to offset 0xffff_0000_0000_0000 for kernel access in the labs.
+It simplifies the design.</p>
 </div>
 </section>
 <section id="configuration">
@@ -537,10 +520,11 @@ To keep everything simple, the following configuration is specified for this lab
 <li><p>The page granule size is 4KB.</p></li>
 <li><p>Not use address space ID (ASID).</p></li>
 </ul>
+<img alt="../_images/lab6_48bit.jpg" src="../_images/lab6_48bit.jpg" />
 </section>
 <section id="reference">
 <h3>Reference<a class="headerlink" href="#reference" title="Link to this heading">#</a></h3>
-<p>So far, we briefly introduce the concept of virtual memory and ARMv8-A virtual memory system architecture.
+<p>So far, we have briefly introduced the concept of virtual memory and ARMv8-A virtual memory system architecture.
 For details, you can refer to</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://developer.arm.com/documentation/100940/0101">ARMv8-A Address Translation</a></p></li>
@@ -550,8 +534,8 @@ For details, you can refer to</p>
 </section>
 <section id="basic-exercises">
 <h2>Basic Exercises<a class="headerlink" href="#basic-exercises" title="Link to this heading">#</a></h2>
-<section id="basic-exercise-1-virtual-memory-in-kernel-space">
-<h3>Basic Exercise 1 - Virtual Memory in Kernel Space<a class="headerlink" href="#basic-exercise-1-virtual-memory-in-kernel-space" title="Link to this heading">#</a></h3>
+<section id="basic-exercise-1-virtual-memory-in-kernel-space-10">
+<h3>Basic Exercise 1 - Virtual Memory in Kernel Space - 10%<a class="headerlink" href="#basic-exercise-1-virtual-memory-in-kernel-space-10" title="Link to this heading">#</a></h3>
 <p>We provide a step-by-step tutorial to guide you to make your original kernel works with virtual memory.
 However, we only give the essential explanation in each step.
 For details, please refer to the manual.</p>
@@ -662,14 +646,14 @@ Hence, you only need</p>
 <span class="n">orr</span><span class="w"> </span><span class="n">x3</span><span class="p">,</span><span class="w"> </span><span class="n">x2</span><span class="p">,</span><span class="w"> </span><span class="n">x3</span>
 <span class="n">str</span><span class="w"> </span><span class="n">x3</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">x1</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="c1">// 2nd 1GB mapped by the 2nd entry of PUD</span>
 
-<span class="n">msr</span><span class="w"> </span><span class="n">ttbr0_el1</span><span class="p">,</span><span class="w"> </span><span class="n">x0</span><span class="w"> </span><span class="c1">// load PGD to the bottom translation based register.</span>
+<span class="n">msr</span><span class="w"> </span><span class="n">ttbr0_el1</span><span class="p">,</span><span class="w"> </span><span class="n">x0</span><span class="w"> </span><span class="c1">// load PGD to the bottom translation-based register.</span>
 
 <span class="n">mrs</span><span class="w"> </span><span class="n">x2</span><span class="p">,</span><span class="w"> </span><span class="n">sctlr_el1</span>
 <span class="n">orr</span><span class="w"> </span><span class="n">x2</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">x2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span>
 <span class="n">msr</span><span class="w"> </span><span class="n">sctlr_el1</span><span class="p">,</span><span class="w"> </span><span class="n">x2</span><span class="w"> </span><span class="c1">// enable MMU, cache remains disabled</span>
 </pre></div>
 </div>
-<p>If you set up correctly, your kernel should work as before.</p>
+<p>If you setup correctly, your kernel should work as before.</p>
 <div class="admonition-todo admonition">
 <p class="admonition-title">Todo</p>
 <p>Set up identity paging.</p>
@@ -689,7 +673,7 @@ Now, you need to modify your linker script to make your kernel’s symbols in th
 </pre></div>
 </div>
 <p>After the kernel is re-built and loaded, load the identity paging’s PGD to <code class="docutils literal notranslate"><span class="pre">ttbr1_el1</span></code>.
-Next, enable the MMU and using an indirect branch to the virtual address.
+Next, enable the MMU and use an indirect branch to the virtual address.
 Then, the CPU is running your kernel in the upper address space.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// ...</span>
 
@@ -712,24 +696,24 @@ Then, the CPU is running your kernel in the upper address space.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If there is hard-coded address(e.g. IO address) in your kernel, you should also set it to the upper address space.</p>
+<p>If there is a hard-coded address(e.g. IO address) in your kernel, you should also set it to the upper address space.</p>
 </div>
 </section>
 <section id="finer-granularity-paging">
 <h4>Finer Granularity Paging<a class="headerlink" href="#finer-granularity-paging" title="Link to this heading">#</a></h4>
 <p>The granularity of two-level translation is 1GB.
 In the previous setting, all memory regions are mapped as device memory.</p>
-<p>However, unaligned access of device memory causes alignment exception and the compiler sometimes generates unaligned access.
+<p>However, unaligned access to device memory causes alignment exceptions and the compiler sometimes generates unaligned access.
 Hence, you should map most of the RAM as normal memory and MMIO region as device memory.</p>
-<p>Then, you should use three level translation(2MB) or four level translation(4KB) for linear mapping.</p>
+<p>Then, you should use three-level translation(2MB) or four-level translation(4KB) for linear mapping.</p>
 <div class="admonition-todo admonition">
 <p class="admonition-title">Todo</p>
 <p>Linear map kernel with finer granularity and map RAM as normal memory.</p>
 </div>
 </section>
 </section>
-<section id="basic-exercise-2-virtual-memory-in-user-space">
-<h3>Basic Exercise 2 - Virtual Memory in User Space<a class="headerlink" href="#basic-exercise-2-virtual-memory-in-user-space" title="Link to this heading">#</a></h3>
+<section id="basic-exercise-2-virtual-memory-in-user-space-30">
+<h3>Basic Exercise 2 - Virtual Memory in User Space - 30%<a class="headerlink" href="#basic-exercise-2-virtual-memory-in-user-space-30" title="Link to this heading">#</a></h3>
 <section id="pgd-allocation">
 <h4>PGD Allocation<a class="headerlink" href="#pgd-allocation" title="Link to this heading">#</a></h4>
 <p>To isolate user processes, you should create an address space for each of them.
@@ -738,26 +722,43 @@ Hence, the kernel should allocate one PGD for each process when it creates a pro
 <section id="map-the-user-space">
 <h4>Map the User Space<a class="headerlink" href="#map-the-user-space" title="Link to this heading">#</a></h4>
 <p>Same as kernel space mapping, you need to iteratively fill in the entries of page tables from PGD -&gt; PUD -&gt; PMD -&gt; PTE.</p>
-<p>During this process, the next level page tables such as PUD, PMD, and PTE may not already present.
+<p>In this lab, we recommand you to use a iteration-based method to implement the page mapping function.
+During this process, the next level page tables such as PUD, PMD, and PTE may not already present.
 You should allocate one page frame to be used as the next level page table.
 Then, fill the page frame’s entries to map the virtual address.</p>
+<p>Here is the brief example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pte</span><span class="w"> </span><span class="o">*</span><span class="nf">walk</span><span class="p">(</span><span class="n">pagetable</span><span class="w"> </span><span class="n">pagetable</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">va</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">alloc</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">level</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">level</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">pte</span><span class="w"> </span><span class="o">*</span><span class="n">pte</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">pte</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">entry</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">pagetable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">pte</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">pagetable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alloc_page</span><span class="p">();</span>
+<span class="w">      </span><span class="n">memset</span><span class="p">(</span><span class="n">pagetable</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1000</span><span class="p">);</span>
+<span class="w">      </span><span class="o">*</span><span class="n">pte</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">...;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <div class="admonition-todo admonition">
 <p class="admonition-title">Todo</p>
-<p>Implement user space paging.</p>
+<p>Implement function like <code class="docutils literal notranslate"><span class="pre">mappages(pagetable</span> <span class="pre">pagetable,</span> <span class="pre">uint64_t</span> <span class="pre">va,</span> <span class="pre">uint64_t</span> <span class="pre">size,</span> <span class="pre">uint64_t</span> <span class="pre">pa,</span> <span class="pre">...)</span></code> and use it to map user’s code at 0x0 and stack regions at 0xffffffffb000 ~ 0xfffffffff000(4 pages).</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You should use 4KB pages for user processes in this lab, so you need PGD, PUD, PMD, and PTE for four-layer translation.</p>
 </div>
-<section id="revisit-fork-and-exec">
-<h5>Revisit Fork and Exec<a class="headerlink" href="#revisit-fork-and-exec" title="Link to this heading">#</a></h5>
+<section id="revisit-syscalls">
+<h5>Revisit Syscalls<a class="headerlink" href="#revisit-syscalls" title="Link to this heading">#</a></h5>
 <p>In lab 5, different user programs used different linker scripts to prevent address overlapping.
 Also, the child process can’t use the same user stack address as the parent.</p>
 <p>With virtual memory, the same virtual address can be mapped to different physical addresses.
-Therefore, you can to revisit <code class="docutils literal notranslate"><span class="pre">fork()</span></code> and <code class="docutils literal notranslate"><span class="pre">exec()</span></code> with virtual memory to solve the problems mentioned above.</p>
+Therefore, you can revisit <code class="docutils literal notranslate"><span class="pre">fork()</span></code>, <code class="docutils literal notranslate"><span class="pre">exec()</span></code> ans <code class="docutils literal notranslate"><span class="pre">mbox_call</span></code> with virtual memory to solve the problems mentioned above.</p>
 <div class="admonition-todo admonition">
 <p class="admonition-title">Todo</p>
-<p>Revisit <code class="docutils literal notranslate"><span class="pre">fork()</span></code> and <code class="docutils literal notranslate"><span class="pre">exec()</span></code> to map the same virtual address to different physical addresses for different processes.</p>
+<p>Revisit syscalls to map the same virtual address to different physical addresses for different processes.</p>
 </div>
 </section>
 </section>
@@ -780,243 +781,88 @@ Also, a TLB invalidation is needed because the old values are staled.</p>
 <p>Set <code class="docutils literal notranslate"><span class="pre">ttbr0_el1</span></code> to switch the address space in context switches.</p>
 </div>
 </section>
-<section id="simple-page-fault-handler">
-<h4>Simple Page Fault Handler<a class="headerlink" href="#simple-page-fault-handler" title="Link to this heading">#</a></h4>
-<p>When the CPU accesses a non-mapped address, a page fault exception is taken.
-You should <strong>print the fault address</strong> store in <code class="docutils literal notranslate"><span class="pre">far_el1</span></code> in the kernel mode and <strong>terminate the user process</strong>.</p>
-<div class="admonition-todo admonition">
-<p class="admonition-title">Todo</p>
-<p>Implement a simple page fault handler.</p>
+</section>
+<section id="video-player-40">
+<h3>Video Player - 40%<a class="headerlink" href="#video-player-40" title="Link to this heading">#</a></h3>
+<p>In order to test the correctness of your previous implementation, we create a <a class="reference download internal" download="" href="../_downloads/4a3ff2431ab7fa74536c184270dbe5c0/vm.img"><code class="xref download docutils literal notranslate"><span class="pre">user</span> <span class="pre">program</span></code></a> that runs only if your kernel behaves as expected.</p>
+<div class="admonition-note admonition">
+<p class="admonition-title">Note</p>
+<p>The user program uses all syscalls in previous lab.</p>
 </div>
-</section>
-</section>
-<section id="test">
-<h3>Test<a class="headerlink" href="#test" title="Link to this heading">#</a></h3>
-<p>Please test your implementation with the following code or equivalent logic code in the demo.</p>
-<p>test.c</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">fork</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">fork</span><span class="p">();</span>
-<span class="w">    </span><span class="n">fork</span><span class="p">();</span>
-<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;pid: %d, sp: 0x%llx cnt: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getpid</span><span class="p">(),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">cnt</span><span class="p">,</span><span class="w"> </span><span class="n">cnt</span><span class="o">++</span><span class="p">);</span><span class="w"> </span><span class="c1">// address should be the same, but the cnt should be increased indepndently</span>
-<span class="w">      </span><span class="n">delay</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0</span><span class="p">;</span><span class="w"> </span><span class="c1">// a non-mapped address.</span>
-<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">a</span><span class="p">);</span><span class="w"> </span><span class="c1">// trigger simple page fault.</span>
-<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Should not be printed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Only if you can run our test program fluently will you receive all the points; otherwise, even though you implemented the system call correctly, you will receive no points in this section.</p>
 </div>
 </section>
 </section>
 <section id="advanced-exercises">
 <h2>Advanced Exercises<a class="headerlink" href="#advanced-exercises" title="Link to this heading">#</a></h2>
-<section id="advanced-1-mmap">
-<h3>Advanced 1 - Mmap<a class="headerlink" href="#advanced-1-mmap" title="Link to this heading">#</a></h3>
+<section id="advanced-exercise-1-mmap-10">
+<h3>Advanced Exercise 1 - Mmap - 10%<a class="headerlink" href="#advanced-exercise-1-mmap-10" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">mmap()</span></code> is the system call to create memory regions for a user process.
 Each region can be mapped to a file or anonymous page(the page frames not related to any file) with different protection.
 Then, users can create heap and memory-mapped files using the system call.</p>
 <p>Besides, the kernel can also use it for implementing the program loader.
 Memory regions such as .text and .data can be created by <strong>memory-mapped files</strong>.
 Memory regions such as <strong>.bss</strong> and <strong>user stack</strong> can be created by <strong>anonymous page mapping</strong>.</p>
+<div class="admonition-note admonition">
+<p class="admonition-title">Note</p>
+<p>Because we don’t have an ELF file for memory-mapped files, you only need to implement the anonymous page mapping in this Lab.</p>
+</div>
 <section id="api-specification">
 <h4>API Specification<a class="headerlink" href="#api-specification" title="Link to this heading">#</a></h4>
 <dl>
 <dt>(void*) mmap(void* addr, size_t len, int prot, int flags, int fd, int file_offset)</dt><dd><p>The kernel uses <strong>addr</strong> and <strong>len</strong> to create a new valid region for the current process.</p>
-<blockquote>
-<div><ul>
-<li><p>If <strong>addr</strong> is NULL, the kernel decides the new region’s start address</p></li>
-<li><p>If <strong>addr</strong> is not NULL</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>If the new region <strong>overlaps</strong> with existing regions, or <strong>addr</strong> is <strong>not page-aligned</strong></p>
+<ul class="simple">
+<li><p>If addr is NULL, the kernel decides the new region’s start address</p></li>
+<li><p>If addr is not NULL</p>
 <ul>
-<li><p>If MAP_FIXED is set, <code class="docutils literal notranslate"><span class="pre">mmap()</span></code> is failed</p></li>
-<li><p>Otherwise, the kernel takes <strong>addr</strong> as a hint and decides the new region’s start address.</p></li>
+<li><p>If the new region overlaps with existing regions, or addr is not page-aligned, the kernel takes addr as a hint and decides the new region’s start address.</p></li>
+<li><p>Otherwise, the kernel uses addr as the new region’s start address.</p></li>
 </ul>
 </li>
-<li><p>Otherwise, the kernel uses <strong>addr</strong> as the new region’s start address.</p></li>
+<li><p>The memory region created by mmap() should be page-aligned, if the len is not multiple of the page size, the kernel rounds it up.</p></li>
 </ul>
-</div></blockquote>
-</li>
-<li><p>The memory region created by <code class="docutils literal notranslate"><span class="pre">mmap()</span></code> should be page-aligned, if the <strong>len</strong> is not multiple of the page size, the kernel rounds it up.</p></li>
-</ul>
-</div></blockquote>
 <p><strong>prot</strong> is the region’s access protection</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>PROT_NONE : not accessible</p></li>
-<li><p>PROT_READ : readable</p></li>
-<li><p>PROT_WRITE : writable</p></li>
-<li><p>PROT_EXEC : executable</p></li>
+<li><p>PROT_NONE : 0, not accessible</p></li>
+<li><p>PROT_READ : 1, readable</p></li>
+<li><p>PROT_WRITE : 2, writable</p></li>
+<li><p>PROT_EXEC : 4, executable</p></li>
 </ul>
 </div></blockquote>
 <p>The following <strong>flags</strong> should be implemented</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>MAP_FIXED: New region’s start should be <strong>addr</strong>, otherwise the <code class="docutils literal notranslate"><span class="pre">mmap()</span></code> fails.</p></li>
 <li><p>MAP_ANONYMOUS: New region is mapped to anonymous page. It’s usually used for stack and heap.</p></li>
-<li><p>MAP_POPULATE: After <code class="docutils literal notranslate"><span class="pre">mmap()</span></code>, it directly does <a class="reference internal" href="#region-map"><span class="std std-ref">Region Page Mapping</span></a>. (You don’t have to implement it if you implement demand paging)</p></li>
-</ul>
-</div></blockquote>
-<p><strong>fd</strong> is the mapped file’s file descriptor..</p>
-<p>The new region’s is mapped to the <strong>file_offset</strong> of the mapped file.</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>The file_offset should be page-aligned.</p></li>
+<li><p>MAP_POPULATE: After <code class="docutils literal notranslate"><span class="pre">mmap()</span></code>, it directly does region_map. (You don’t have to implement it if you implement demand paging)</p></li>
 </ul>
 </div></blockquote>
 </dd>
 </dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<ul class="simple">
-<li><p>You don’t need to handle the case that the new region overlaps existing regions.</p></li>
-<li><p>We use memory mapped files for the ELF loader. If you don’t implement ELF loader, you don’t need to implement <strong>fd</strong>, <strong>file_offset</strong>, and <strong>MAP_FIXED</strong>.</p></li>
-</ul>
-</div>
 </section>
 <section id="region-page-mapping">
-<span id="region-map"></span><h4>Region Page Mapping<a class="headerlink" href="#region-page-mapping" title="Link to this heading">#</a></h4>
-<p>If the user specifies MAP_POPULATE in the <code class="docutils literal notranslate"><span class="pre">mmap()</span></code> call.
-The kernel should create the page mapping for the newly created region.</p>
-<ul class="simple">
+<h4>Region Page Mapping<a class="headerlink" href="#region-page-mapping" title="Link to this heading">#</a></h4>
+<p>If the user specifies MAP_POPULATE in the mmap() call. The kernel should create the page mapping for the newly created region.</p>
+<ul>
 <li><p>If the region is mapped to anonymous pages</p>
-<ol class="arabic simple">
+<blockquote>
+<div><ol class="arabic simple">
 <li><p>Allocate page frames.</p></li>
 <li><p>Map the region to page frames, and set the page attributes according to region’s protection policy.</p></li>
 </ol>
-</li>
-<li><p>If the region is mapped to a file</p>
-<ol class="arabic simple">
-<li><p>Allocate page frames.</p></li>
-<li><p>Map the region to page frames, and set the page attributes according to region’s protection policy.</p></li>
-<li><p>Copy the file’s content to the memory region.</p></li>
-</ol>
+</div></blockquote>
 </li>
 </ul>
-</section>
-<section id="tests">
-<h4>Tests<a class="headerlink" href="#tests" title="Link to this heading">#</a></h4>
-<p>Please test your implementation with the following code or equivalent logic code in the demo.</p>
-<p>illegal_read.c</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mmap</span><span class="p">(</span><span class="mh">0x1000</span><span class="p">,</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span><span class="w"> </span><span class="n">PROT_READ</span><span class="p">,</span><span class="w"> </span><span class="n">MAP_ANONYMOUS</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
-<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;addr: %llx</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="p">);</span>
-<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="p">[</span><span class="mi">1000</span><span class="p">]);</span><span class="w"> </span><span class="c1">// should be 0</span>
-<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="p">[</span><span class="mi">4097</span><span class="p">]);</span><span class="w"> </span><span class="c1">// should be segfault</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>illegal_write.c</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span><span class="w"> </span><span class="n">PROT_READ</span><span class="p">,</span><span class="w"> </span><span class="n">MAP_ANONYMOUS</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
-<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;addr: %llx</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="p">);</span>
-<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="p">[</span><span class="mi">1000</span><span class="p">]);</span><span class="w"> </span><span class="c1">// should be 0</span>
-<span class="w">  </span><span class="n">ptr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// should be seg fault</span>
-<span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ptr</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w"> </span><span class="c1">// not reached</span>
-<span class="p">}</span>
-</pre></div>
-</div>
 <div class="admonition-todo admonition">
 <p class="admonition-title">Todo</p>
-<p>Implement <code class="docutils literal notranslate"><span class="pre">mmap()</span></code>.</p>
+<p>Implement system call mmap, syscall number: 10.</p>
 </div>
 </section>
 </section>
-<section id="advanced-exercise-2-elf-loader">
-<span id="elf"></span><h3>Advanced Exercise 2 - ELF Loader<a class="headerlink" href="#advanced-exercise-2-elf-loader" title="Link to this heading">#</a></h3>
-<p>In this part, you need to implement an ELF loader to replace the raw binary loader.</p>
-<section id="elf-parsing">
-<h4>ELF Parsing<a class="headerlink" href="#elf-parsing" title="Link to this heading">#</a></h4>
-<p>The difference between raw binary and ELF is the header.
-You can get segments information by parsing the ELF file’s header</p>
-<p>To implement an ELF loader, you only need to care about the ELF header and the program headers.
-The following are struct members you need to use for loading a statically linked ELF.</p>
-<section id="elf-header">
-<h5>ELF Header<a class="headerlink" href="#elf-header" title="Link to this heading">#</a></h5>
-<ul class="simple">
-<li><p><strong>e_entry</strong>: The ELF’s entry point, you need to set user exception return address to it.</p></li>
-<li><p><strong>e_phoff</strong>: The offset of program headers from ELF’s file start.</p></li>
-<li><p><strong>e_phnum</strong>: The number of program headers</p></li>
-</ul>
-</section>
-<section id="program-header">
-<h5>Program Header<a class="headerlink" href="#program-header" title="Link to this heading">#</a></h5>
-<ul class="simple">
-<li><p><strong>p_type</strong>: The type of program header, you only need to care about PT_LOAD (LOAD segments).</p></li>
-<li><p><strong>p_vaddr</strong>: The virtual address should be loaded to.</p></li>
-<li><p><strong>p_offset</strong>: The offset to start of ELF.</p></li>
-<li><p><strong>p_align</strong>: <strong>p_vaddr</strong> <span class="math notranslate nohighlight">\(\equiv\)</span> <strong>p_offset</strong> (mod <strong>p_align</strong>)</p></li>
-<li><p><strong>p_filesz</strong>: The file size, contains .text, .data, etc.</p></li>
-<li><p><strong>p_memsz</strong>: The memory size of the segment. It usually equals <strong>p_filesz</strong>. If the segment contains .bss, it should be larger than <strong>p_filesz</strong></p></li>
-<li><p><strong>p_flags</strong>: The extra flags, you only need to care about rwx.</p></li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Don’t confuse the <strong>p_offset</strong> with <strong>file_offset</strong> in <code class="docutils literal notranslate"><span class="pre">mmap()</span></code>. <strong>p_offset</strong> may not be page-aligned.</p>
-<p>Don’t confuse the <strong>p_vaddr</strong> with <strong>addr</strong> in <code class="docutils literal notranslate"><span class="pre">mmap()</span></code>. <strong>p_vaddr</strong> may not be page-aligned.</p>
-</div>
-<div class="admonition-todo admonition">
-<p class="admonition-title">Todo</p>
-<p>Parse the ELF header.</p>
-</div>
-<div class="admonition hint">
-<p class="admonition-title">Hint</p>
-<p>You can check the correctness by readelf -l &lt;your ELF&gt; on linux</p>
-</div>
-</section>
-<section id="elf-reference">
-<h5>ELF reference<a class="headerlink" href="#elf-reference" title="Link to this heading">#</a></h5>
-<ul class="simple">
-<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">https://en.wikipedia.org/wiki/Executable_and_Linkable_Format</a></p></li>
-</ul>
-</section>
-</section>
-<section id="elf-mapping">
-<h4>ELF mapping<a class="headerlink" href="#elf-mapping" title="Link to this heading">#</a></h4>
-<p>You can use <code class="docutils literal notranslate"><span class="pre">mmap()</span></code> to create regions for the ELF file according to the LOAD segments in program headers.</p>
-<p>In general, you can use
-<code class="code docutils literal notranslate"><span class="pre">mmap(p_vaddr,</span> <span class="pre">p_filesz,</span> <span class="pre">p_flags,</span> <span class="pre">MAP_FIXED</span> <span class="pre">|</span> <span class="pre">MAP_POPULATE,</span> <span class="pre">bin_start,</span> <span class="pre">p_offset);</span> <span class="pre">//</span> <span class="pre">MAP_POPULATE</span> <span class="pre">can</span> <span class="pre">be</span> <span class="pre">removed</span> <span class="pre">if</span> <span class="pre">you</span> <span class="pre">implement</span> <span class="pre">demand</span> <span class="pre">paging</span></code>
-to create memory regions, and <a class="reference internal" href="#region-map"><span class="std std-ref">Region Page Mapping</span></a> can do the mapping and copying jobs for you.</p>
-<p>However, there are some cases you need to care about:</p>
-<section id="p-memsz-p-filesz">
-<h5>p_memsz &gt; p_filesz<a class="headerlink" href="#p-memsz-p-filesz" title="Link to this heading">#</a></h5>
-<p>It usually happens in .bss and .data are in one LOAD segment, or .bss has its own LOAD segment.
-In this case, <strong>.data</strong> should still <strong>map to the ELF file</strong> but <strong>.bss</strong> should <strong>map to anonymous page frames</strong> by setting MAP_ANONYMOUS because it’s not backed by the ELF file.</p>
-<p>If unfortunately, <strong>.bss and .data are in the same segment</strong> and their <strong>boundary is at the middle of a page frame</strong>.
-You should</p>
-<ol class="arabic simple">
-<li><p>Do the same thing as normal file mapping region as in <a class="reference internal" href="#region-map"><span class="std std-ref">Region Page Mapping</span></a></p></li>
-<li><p>Initialize the part of the page frame that belongs to .bss to 0.</p></li>
-</ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you implement demand paging, you should pre-fault on the .data and .bss boundary and make .bss’s head 0 initialized.</p>
-</div>
-</section>
-<section id="p-vaddr-and-p-offset-are-not-page-aligned">
-<h5>p_vaddr and p_offset are not page aligned<a class="headerlink" href="#p-vaddr-and-p-offset-are-not-page-aligned" title="Link to this heading">#</a></h5>
-<p>The region created by <code class="docutils literal notranslate"><span class="pre">mmap</span></code> should be page aligned.
-With the MAP_FIXED flag, some parameters need to be modified</p>
-<ul class="simple">
-<li><p><strong>addr</strong> should be set to <strong>p_vaddr</strong> - (<strong>p_vaddr</strong> MOD <strong>page_size</strong>)</p></li>
-<li><p><strong>file_offset</strong> should be set to <strong>p_offset</strong> - (<strong>p_offset</strong> MOD <strong>page_size</strong>)</p></li>
-<li><p><strong>len</strong> should be set to <strong>p_filesz</strong> + (<strong>p_offset</strong> MOD <strong>page_size</strong>)</p></li>
-</ul>
-<div class="admonition-todo admonition">
-<p class="admonition-title">Todo</p>
-<p>Implement ELF mapping.</p>
-</div>
-</section>
-</section>
-</section>
-<section id="page-fault-handler-demand-paging">
-<h3>Page Fault Handler &amp; Demand Paging<a class="headerlink" href="#page-fault-handler-demand-paging" title="Link to this heading">#</a></h3>
+<section id="advanced-exercise-2-page-fault-handler-demand-paging-10">
+<h3>Advanced Exercise 2 - Page Fault Handler &amp; Demand Paging - 10%<a class="headerlink" href="#advanced-exercise-2-page-fault-handler-demand-paging-10" title="Link to this heading">#</a></h3>
 <p>The page frames are pre-allocated in the previous parts.
 However, user program might allocate a huge space on heap or memory mapped files without using it.
 The kerenl wastes the CPU time and the physical memory on this things.</p>
@@ -1030,16 +876,26 @@ The kernel only allocates the PGD for newly created process in the beggining.</p
 </ul>
 </li>
 <li><p>If it’s part of one region,</p>
-<p>Follow <a class="reference internal" href="#region-map"><span class="std std-ref">Region Page Mapping</span></a> but only map <strong>one page frame</strong>. for the fault address.</p>
+<p>Follow region_map but only map <strong>one page frame</strong>. for the fault address.</p>
 </li>
 </ul>
+<div class="admonition-note admonition">
+<p class="admonition-title">Note</p>
+<p>To justify the correctness, you should print the log of each fault; here’s an brief example.</p>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// For Translation fault</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;[Translation fault]: %x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">addr</span><span class="p">);</span>
+<span class="c1">// For Segmentation fault</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;[Segmentation fault]: Kill Process</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
 <div class="admonition-todo admonition">
 <p class="admonition-title">Todo</p>
 <p>Implement demand paging.</p>
 </div>
 </section>
-<section id="advanced-exercise-4-copy-on-write">
-<h3>Advanced Exercise 4 - Copy on Write<a class="headerlink" href="#advanced-exercise-4-copy-on-write" title="Link to this heading">#</a></h3>
+<section id="advanced-exercise-3-copy-on-write-10">
+<h3>Advanced Exercise 3 - Copy on Write - 10%<a class="headerlink" href="#advanced-exercise-3-copy-on-write-10" title="Link to this heading">#</a></h3>
 <p>When a process call <code class="docutils literal notranslate"><span class="pre">fork()</span></code> to create a child process,
 the kernel needs to copy all the page frames owned by the parent in the previous implementation.
 Otherwise, a write by either child or parent might not be awared by the other one and induce error.</p>
@@ -1071,6 +927,10 @@ Hence, a copy-on-write mechanism comes to help these odds.</p>
 <p><code class="docutils literal notranslate"><span class="pre">fork()</span></code> may be executed many times, so page frames may be shared by many children and one parent.
 Hence, you need a reference count for each page frame.
 And you should not reclaim the page frame if there is still someone referring to it.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Remember to remap the chlid process’ mailbox memory in fork(); our user program should still work under the copy-on-write policy.</p>
 </div>
 <div class="admonition-todo admonition">
 <p class="admonition-title">Todo</p>
@@ -1145,7 +1005,7 @@ And you should not reclaim the page frame if there is still someone referring to
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercises">Basic Exercises</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-1-virtual-memory-in-kernel-space">Basic Exercise 1 - Virtual Memory in Kernel Space</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-1-virtual-memory-in-kernel-space-10">Basic Exercise 1 - Virtual Memory in Kernel Space - 10%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#translation-control-register-tcr">Translation Control Register (TCR)</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-attribute-indirection-register-mair">Memory Attribute Indirection Register (MAIR)</a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#brief-introduction">Brief Introduction</a></li>
@@ -1157,42 +1017,26 @@ And you should not reclaim the page frame if there is still someone referring to
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#finer-granularity-paging">Finer Granularity Paging</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-2-virtual-memory-in-user-space">Basic Exercise 2 - Virtual Memory in User Space</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-exercise-2-virtual-memory-in-user-space-30">Basic Exercise 2 - Virtual Memory in User Space - 30%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pgd-allocation">PGD Allocation</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#map-the-user-space">Map the User Space</a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#revisit-fork-and-exec">Revisit Fork and Exec</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#revisit-syscalls">Revisit Syscalls</a></li>
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#context-switch">Context Switch</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-page-fault-handler">Simple Page Fault Handler</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test">Test</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#video-player-40">Video Player - 40%</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercises">Advanced Exercises</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-1-mmap">Advanced 1 - Mmap</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-1-mmap-10">Advanced Exercise 1 - Mmap - 10%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#api-specification">API Specification</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#region-page-mapping">Region Page Mapping</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tests">Tests</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-2-elf-loader">Advanced Exercise 2 - ELF Loader</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#elf-parsing">ELF Parsing</a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#elf-header">ELF Header</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#program-header">Program Header</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#elf-reference">ELF reference</a></li>
-</ul>
-</li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#elf-mapping">ELF mapping</a><ul class="nav section-nav flex-column">
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#p-memsz-p-filesz">p_memsz &gt; p_filesz</a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#p-vaddr-and-p-offset-are-not-page-aligned">p_vaddr and p_offset are not page aligned</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#page-fault-handler-demand-paging">Page Fault Handler &amp; Demand Paging</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-4-copy-on-write">Advanced Exercise 4 - Copy on Write</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-2-page-fault-handler-demand-paging-10">Advanced Exercise 2 - Page Fault Handler &amp; Demand Paging - 10%</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-exercise-3-copy-on-write-10">Advanced Exercise 3 - Copy on Write - 10%</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#on-fork-a-new-process">On Fork a New Process</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#when-either-children-or-parent-write-to-that-page">When Either Children or Parent Write to that Page</a></li>
 </ul>
