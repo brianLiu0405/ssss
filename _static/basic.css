@@ -513,7 +513,7 @@ table.hlist td {
 }
 
 .sig-name, code.descname {
-    background-color: transparent;
+    background-color: #f2f2f2;
     font-weight: bold;
 }
 
@@ -526,7 +526,7 @@ code.descname {
 }
 
 .sig-prename, code.descclassname {
-    background-color: transparent;
+    background-color: #f2f2f2;
 }
 
 .optional {
@@ -785,7 +785,7 @@ div[class*="highlight-"] {
 
 td.linenos pre {
     border: 0;
-    background-color: transparent;
+    background-color: #f2f2f2;
     color: #aaa;
 }
 
@@ -835,7 +835,7 @@ div.code-block-caption {
 }
 
 div.code-block-caption code {
-    background-color: transparent;
+    background-color: #f2f2f2;
 }
 
 table.highlighttable td.linenos,
@@ -861,12 +861,12 @@ div.literal-block-wrapper {
 }
 
 code.xref, a code {
-    background-color: transparent;
+    background-color: #f2f2f2;
     font-weight: bold;
 }
 
 h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
-    background-color: transparent;
+    background-color: #f2f2f2;
 }
 
 .viewcode-link {
