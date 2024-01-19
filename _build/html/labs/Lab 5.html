@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Lab 0 : Environment Setup &amp; simple verilog practice &#8212; CSCS10014: Computer Organization</title>
+    <title>Lab 5 : Implement Cache Manager &#8212; CSCS10014: Computer Organization</title>
   
   
   
@@ -40,11 +40,11 @@
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'labs/Lab 0';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'labs/Lab 5';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Lab 2 : Single Cycle CPU" href="Lab%202.html" />
-    <link rel="prev" title="Staff" href="../class/staff.html" />
+    <link rel="next" title="Lab 1 : Single Cycle CPU" href="Lab1.html" />
+    <link rel="prev" title="Lab 3 Simple Pipeline CPU" href="Lab%203.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -157,10 +157,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Labs:</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lab 0 : Environment Setup &amp; simple verilog practice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lab%200.html">Lab 0 : Environment Setup &amp; simple verilog practice</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%202.html">Lab 2 : Single Cycle CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%203.html">Lab 3 Simple Pipeline CPU</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lab%205.html">Lab 5 : Implement Cache Manager</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lab 5 : Implement Cache Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab1.html">Lab 1 : Single Cycle CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab4.html">Lab 4 : Advance Pipeline CPU</a></li>
 </ul>
@@ -217,7 +217,7 @@
       
       
       
-      <li><a href="../_sources/labs/Lab 0.rst" target="_blank"
+      <li><a href="../_sources/labs/Lab 5.rst" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -301,7 +301,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Lab 0 : Environment Setup & simple verilog practice</h1>
+    <h1>Lab 5 : Implement Cache Manager</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -311,16 +311,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verilator">Verilator</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-adder-alu">Full Adder &amp; ALU</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bits-alu">2. 4-bits ALU</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-tool">Debug tool</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gtkwave">GTKwave</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explain-the-code">Explain the code</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-test-case">simple test case</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
@@ -335,119 +328,110 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="lab-0-environment-setup-simple-verilog-practice">
-<h1>Lab 0 : Environment Setup &amp; simple verilog practice<a class="headerlink" href="#lab-0-environment-setup-simple-verilog-practice" title="Link to this heading">#</a></h1>
-<section id="verilator">
-<h2>Verilator<a class="headerlink" href="#verilator" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://www.veripool.org/verilator/">Verilator</a> is an open-source
-Verilog simulation tool that you will use for RTL functional simulation
-to validate the RTL code you have written.</p>
-<section id="installation">
-<h3>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>How to install : <a class="reference external" href="https://verilator.org/guide/latest/install.html">https://verilator.org/guide/latest/install.html</a>
-(Recommended to install in the Ubuntu environment.)</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Prerequisites:
-sudo apt-get install git perl python3 make autoconf g++ flex bison ccache
-sudo apt-get install libgoogle-perftools-dev numactl perl-doc
-sudo apt-get install libfl2  # Ubuntu only (ignore if gives error)
-sudo apt-get install libfl-dev  # Ubuntu only (ignore if gives error)
-sudo apt-get install zlibc zlib1g zlib1g-dev  # Ubuntu only (ignore if gives error)
+  <section id="lab-5-implement-cache-manager">
+<h1>Lab 5 : Implement Cache Manager<a class="headerlink" href="#lab-5-implement-cache-manager" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>This lab you’ll design a cache manager to manage
+the cache table and data in cache, also make sure your data is correct
+in cache and memory.</p>
+<p>We provide the code of cache simulator, but cache manager is empty, you
+need to implement the cache manager to finish lab.</p>
+<p>The implementation method of the cache manager has no restrictions, and
+there are no specified block size requirements. As long as the cache
+operates correctly, both <strong>Direct Mapped</strong> and <strong>Set Associative Cache</strong>
+are acceptable. Additionally, you are free to design the <strong>Cache
+replacement policy</strong> and <strong>update policy</strong> as you see fit.</p>
+</section>
+<section id="explain-the-code">
+<h2>Explain the code<a class="headerlink" href="#explain-the-code" title="Link to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Cache</span>
+<span class="p">{</span>
+<span class="n">private</span><span class="p">:</span>
+    <span class="n">std</span><span class="p">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Block</span><span class="o">&gt;</span> <span class="n">blocks</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">size</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="nb">len</span><span class="p">;</span>
+<span class="n">public</span><span class="p">:</span>
+    <span class="n">Cache</span><span class="p">(</span><span class="n">unsigned</span> <span class="nb">int</span> <span class="n">size</span><span class="p">);</span>
 
-git clone https://github.com/verilator/verilator   # Only first time
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">get_size</span><span class="p">();</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">get_len</span><span class="p">();</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">set_block_size</span><span class="p">(</span><span class="n">unsigned</span> <span class="nb">int</span> <span class="n">block_size</span><span class="p">);</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">get_machine_address_bit</span><span class="p">();</span>
 
-# Every time you need to build:
-unsetenv VERILATOR_ROOT  # For csh; ignore error if on bash
-unset VERILATOR_ROOT  # For bash
-cd verilator
-git pull         # Make sure git repository is up-to-date
-git tag          # See what versions exist
-git checkout v5.008  # Switch to specified release version
-
-autoconf         # Create ./configure script
-./configure      # Configure and create Makefile
-make -j `nproc`  # Build Verilator itself (if error, try just &#39;make&#39;)
-sudo make install
+    <span class="n">Block</span><span class="o">&amp;</span> <span class="n">operator</span><span class="p">[](</span><span class="n">unsigned</span> <span class="nb">int</span> <span class="n">index</span><span class="p">);</span>
+<span class="p">};</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>You need to install version <strong>5.008</strong>. After a successful
-installation, run the following command to check if the installation
-was successful and if the version is correct.</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">verilator</span> <span class="o">--</span><span class="n">version</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>The Verilator manual contains a <a class="reference external" href="https://verilator.org/guide/latest/example_cc.html#example-c-execution">C++
-example</a>
-that you can locate. Follow the steps in the example to learn how to
-use it.</p></li>
-</ul>
-</section>
-</section>
-<section id="full-adder-alu">
-<h2>Full Adder &amp; ALU<a class="headerlink" href="#full-adder-alu" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://hackmd.io/yqWJmbX_SfOnYJNLvbjx5Q">Report</a> ### 1. Full Adder
-Based on the circuit of the following adder, complete the circuit using
-Verilog, and create a testbench using Verilator to verify the circuit.</p>
-<img alt="https://hackmd.io/_uploads/Sk7Otri9n.png" src="https://hackmd.io/_uploads/Sk7Otri9n.png" />
-<section id="bits-alu">
-<h3>2. 4-bits ALU<a class="headerlink" href="#bits-alu" title="Link to this heading">#</a></h3>
-<p>Based on the ALU function table below, complete the full ALU circuit
-using Verilog, and create a testbench using Verilator to verify the
-circuit.</p>
-<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="c1">// file name : alu.v</span>
-<span class="c1">// You shouldn&#39;t change interface naming; otherwise, your lab0 will receive 0 points.</span>
-<span class="k">module</span><span class="w"> </span><span class="n">alu</span><span class="p">(</span><span class="k">input</span><span class="w"> </span><span class="k">signed</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">a</span><span class="p">,</span>
-<span class="w">           </span><span class="k">input</span><span class="w"> </span><span class="k">signed</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">b</span><span class="p">,</span>
-<span class="w">           </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">2</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">s</span><span class="p">,</span>
-<span class="w">           </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="k">signed</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
-
-<span class="c1">// implement your module here</span>
-
-<span class="k">endmodule</span>
-</pre></div>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The <strong>ADD</strong> and <strong>SUB</strong> operations in the ALU must use the
-completed full adder circuit.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>All operations are <strong>signed</strong> arithmetic.</p>
-</div>
-<img alt="https://hackmd.io/_uploads/S1vnnvs93.png" src="https://hackmd.io/_uploads/S1vnnvs93.png" />
-</section>
-</section>
+<p>This is the Class of <strong>Cache</strong> we provide, you can use the
+<code class="docutils literal notranslate"><span class="pre">get_size()</span></code> get size of cache. <code class="docutils literal notranslate"><span class="pre">get_len()</span></code> get number of block.
+<code class="docutils literal notranslate"><span class="pre">set_block_size(unsigned</span> <span class="pre">int</span> <span class="pre">block_size)</span></code> set block size by yourself,
+This configuration will be related to the number of cache lines.
+<code class="docutils literal notranslate"><span class="pre">get_machine_address_bit()</span></code> get machine address base.</p>
 <hr class="docutils" />
-<section id="debug-tool">
-<h2>Debug tool<a class="headerlink" href="#debug-tool" title="Link to this heading">#</a></h2>
-<section id="gtkwave">
-<h3>GTKwave<a class="headerlink" href="#gtkwave" title="Link to this heading">#</a></h3>
-<p><a class="reference external" href="https://gtkwave.sourceforge.net/">https://gtkwave.sourceforge.net/</a></p>
-<p>Verilator support waveform tracing, enable waveform tracing through add
-code in <strong>testbench (cpp file)</strong> and compile add <strong>flag –trace</strong></p>
-<p>Using GTKwave to open <strong>.vcd</strong> file to check the waveform</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span>
-<span class="n">gtkWave</span> <span class="c1"># open UI directly</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Block</span><span class="p">{</span>
+<span class="n">private</span><span class="p">:</span>
+    <span class="n">std</span><span class="p">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">unsigned</span> <span class="nb">int</span><span class="o">&gt;</span> <span class="n">values</span><span class="p">;</span>
+<span class="n">public</span><span class="p">:</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="nb">len</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">tag</span><span class="p">;</span>
 
-<span class="ow">or</span>
+    <span class="n">Block</span><span class="p">(</span><span class="n">unsigned</span> <span class="nb">int</span> <span class="n">block_size</span><span class="p">);</span>
 
-<span class="mf">2.</span>
-<span class="n">gtkwave</span> <span class="n">xxx</span><span class="o">.</span><span class="n">vcd</span> <span class="c1"># open UI with waveform</span>
+    <span class="n">unsigned</span> <span class="nb">int</span><span class="o">&amp;</span> <span class="n">operator</span><span class="p">[](</span><span class="n">unsigned</span> <span class="nb">int</span> <span class="n">index</span><span class="p">);</span>
+<span class="p">};</span>
 </pre></div>
 </div>
-<img alt="https://hackmd.io/_uploads/Byh7iVCih.png" src="https://hackmd.io/_uploads/Byh7iVCih.png" />
+<p>this is the Class of <strong>Block</strong> we provide, you must record the <strong>Tag</strong>
+in <code class="docutils literal notranslate"><span class="pre">Block.tag</span></code> when the data in cache, and you also can use the
+<code class="docutils literal notranslate"><span class="pre">Block.len</span></code> get how many word(4 bytes) in a block</p>
+<hr class="docutils" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CacheManager</span>
+<span class="p">{</span>
+<span class="n">private</span><span class="p">:</span>
+    <span class="n">Memory</span> <span class="o">*</span><span class="n">memory</span><span class="p">;</span>
+    <span class="n">Cache</span> <span class="o">*</span><span class="n">cache</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">size</span><span class="p">;</span>       <span class="o">//</span> <span class="nb">bytes</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">tag_bits</span><span class="p">;</span>
+<span class="n">public</span><span class="p">:</span>
+
+    <span class="n">CacheManager</span><span class="p">(</span><span class="n">Memory</span> <span class="o">*</span><span class="n">memory</span><span class="p">,</span> <span class="n">Cache</span> <span class="o">*</span><span class="n">cache</span><span class="p">);</span>
+    <span class="o">~</span><span class="n">CacheManager</span><span class="p">();</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">read</span><span class="p">(</span><span class="n">unsigned</span> <span class="nb">int</span> <span class="n">addr</span><span class="p">);</span>
+    <span class="n">void</span> <span class="n">write</span><span class="p">(</span><span class="n">unsigned</span> <span class="nb">int</span> <span class="n">addr</span><span class="p">,</span> <span class="n">unsigned</span> <span class="n">value</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>This is Class of <strong>CacheManager</strong>, you need to config your metadata in
+Constructor (ex: block size, cache way…), and design your cache manager
+read/write in cpp file. Test pattern will call the CacheManger
+read/write to communicate with your cache, so this part you must manage
+your data in cache and memory properly.</p>
+<div class="info docutils container">
+<p>block size need to call Class Cache api
+<code class="docutils literal notranslate"><span class="pre">set_block_size(unsigned</span> <span class="pre">int</span> <span class="pre">block_size)</span></code></p>
+</div>
+<section id="simple-test-case">
+<h3>simple test case<a class="headerlink" href="#simple-test-case" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">w</span> <span class="n">bf880c18</span> <span class="mi">83831</span><span class="n">c0a</span>
+<span class="n">w</span> <span class="n">bf880c08</span> <span class="mi">4</span><span class="n">a0c2c0e</span>
+<span class="n">w</span> <span class="n">bf880c04</span> <span class="mi">7446</span><span class="n">feef</span>
+<span class="n">r</span> <span class="n">bf880c04</span>
+<span class="n">r</span> <span class="n">bf880c08</span>
+<span class="n">w</span> <span class="mi">80</span><span class="n">c9578</span> <span class="n">e79be23</span>
+<span class="n">r</span> <span class="n">bf880c18</span>
+<span class="n">r</span> <span class="mi">80</span><span class="n">c9578</span>
+</pre></div>
+</div>
+<div class="info docutils container">
+<p>You can use Python to program the pattern generator to
+generate the test case to verify your Cache Manager</p>
+</div>
 </section>
 </section>
 <section id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference external" href="https://itsembedded.com/dhd/verilator_1/">verilator用法</a></p></li>
-</ul>
+<p>Computer Organization and Design RISC-V Edition, CH5</p>
 </section>
 </section>
 
@@ -463,20 +447,20 @@ code in <strong>testbench (cpp file)</strong> and compile add <strong>flag –tr
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../class/staff.html"
+       href="Lab%203.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Staff</p>
+        <p class="prev-next-title">Lab 3 Simple Pipeline CPU</p>
       </div>
     </a>
     <a class="right-next"
-       href="Lab%202.html"
+       href="Lab1.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Lab 2 : Single Cycle CPU</p>
+        <p class="prev-next-title">Lab 1 : Single Cycle CPU</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -496,16 +480,9 @@ code in <strong>testbench (cpp file)</strong> and compile add <strong>flag –tr
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verilator">Verilator</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-adder-alu">Full Adder &amp; ALU</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bits-alu">2. 4-bits ALU</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-tool">Debug tool</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gtkwave">GTKwave</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explain-the-code">Explain the code</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-test-case">simple test case</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Lab 0 : Environment Setup &amp; simple verilog practice &#8212; CSCS10014: Computer Organization</title>
+    <title>Lab 4 : Advance Pipeline CPU &#8212; CSCS10014: Computer Organization</title>
   
   
   
@@ -40,11 +40,10 @@
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'labs/Lab 0';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'labs/Lab4';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Lab 2 : Single Cycle CPU" href="Lab%202.html" />
-    <link rel="prev" title="Staff" href="../class/staff.html" />
+    <link rel="prev" title="Lab 1 : Single Cycle CPU" href="Lab1.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -157,12 +156,12 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Labs:</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lab 0 : Environment Setup &amp; simple verilog practice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lab%200.html">Lab 0 : Environment Setup &amp; simple verilog practice</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%202.html">Lab 2 : Single Cycle CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%203.html">Lab 3 Simple Pipeline CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%205.html">Lab 5 : Implement Cache Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab1.html">Lab 1 : Single Cycle CPU</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lab4.html">Lab 4 : Advance Pipeline CPU</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lab 4 : Advance Pipeline CPU</a></li>
 </ul>
 
     </div>
@@ -217,7 +216,7 @@
       
       
       
-      <li><a href="../_sources/labs/Lab 0.rst" target="_blank"
+      <li><a href="../_sources/labs/Lab4.rst" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -301,7 +300,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Lab 0 : Environment Setup & simple verilog practice</h1>
+    <h1>Lab 4 : Advance Pipeline CPU</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -311,19 +310,13 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verilator">Verilator</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction">Instruction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirement">Requirement</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forwarding-unit">Forwarding Unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hazard-dectection-unit">Hazard Dectection Unit</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-adder-alu">Full Adder &amp; ALU</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bits-alu">2. 4-bits ALU</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-tool">Debug tool</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gtkwave">GTKwave</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
 </ul>
             </nav>
         </div>
@@ -335,119 +328,68 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="lab-0-environment-setup-simple-verilog-practice">
-<h1>Lab 0 : Environment Setup &amp; simple verilog practice<a class="headerlink" href="#lab-0-environment-setup-simple-verilog-practice" title="Link to this heading">#</a></h1>
-<section id="verilator">
-<h2>Verilator<a class="headerlink" href="#verilator" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://www.veripool.org/verilator/">Verilator</a> is an open-source
-Verilog simulation tool that you will use for RTL functional simulation
-to validate the RTL code you have written.</p>
-<section id="installation">
-<h3>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>How to install : <a class="reference external" href="https://verilator.org/guide/latest/install.html">https://verilator.org/guide/latest/install.html</a>
-(Recommended to install in the Ubuntu environment.)</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Prerequisites:
-sudo apt-get install git perl python3 make autoconf g++ flex bison ccache
-sudo apt-get install libgoogle-perftools-dev numactl perl-doc
-sudo apt-get install libfl2  # Ubuntu only (ignore if gives error)
-sudo apt-get install libfl-dev  # Ubuntu only (ignore if gives error)
-sudo apt-get install zlibc zlib1g zlib1g-dev  # Ubuntu only (ignore if gives error)
-
-git clone https://github.com/verilator/verilator   # Only first time
-
-# Every time you need to build:
-unsetenv VERILATOR_ROOT  # For csh; ignore error if on bash
-unset VERILATOR_ROOT  # For bash
-cd verilator
-git pull         # Make sure git repository is up-to-date
-git tag          # See what versions exist
-git checkout v5.008  # Switch to specified release version
-
-autoconf         # Create ./configure script
-./configure      # Configure and create Makefile
-make -j `nproc`  # Build Verilator itself (if error, try just &#39;make&#39;)
-sudo make install
+  <section id="lab-4-advance-pipeline-cpu">
+<h1>Lab 4 : Advance Pipeline CPU<a class="headerlink" href="#lab-4-advance-pipeline-cpu" title="Link to this heading">#</a></h1>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h2>
+<img alt="https://hackmd.io/_uploads/S1na9_i23.png" src="https://hackmd.io/_uploads/S1na9_i23.png" />
+</section>
+<section id="instruction">
+<h2>Instruction<a class="headerlink" href="#instruction" title="Link to this heading">#</a></h2>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><p>add</p></td>
+<td><p>or</p></td>
+<td><p>sw</p></td>
+<td><p>jal</p></td>
+</tr>
+<tr class="row-even"><td><p>addi</p></td>
+<td><p>ori</p></td>
+<td><p>beq</p></td>
+<td><p>jalr</p></td>
+</tr>
+<tr class="row-odd"><td><p>sub</p></td>
+<td><p>slt</p></td>
+<td><p>blt</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>and</p></td>
+<td><p>slti</p></td>
+<td><p>bne</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>andi</p></td>
+<td><p>lw</p></td>
+<td><p>bgt</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="requirement">
+<h2>Requirement<a class="headerlink" href="#requirement" title="Link to this heading">#</a></h2>
+<section id="forwarding-unit">
+<h3>Forwarding Unit<a class="headerlink" href="#forwarding-unit" title="Link to this heading">#</a></h3>
+<p>Forwarding Unit deals with write-use data hazard, for example, your
+design should handle the following case.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span>
+<span class="n">add</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x3</span>
+<span class="n">add</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x4</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>You need to install version <strong>5.008</strong>. After a successful
-installation, run the following command to check if the installation
-was successful and if the version is correct.</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">verilator</span> <span class="o">--</span><span class="n">version</span>
+</section>
+<section id="hazard-dectection-unit">
+<h3>Hazard Dectection Unit<a class="headerlink" href="#hazard-dectection-unit" title="Link to this heading">#</a></h3>
+<p>Your hazard dectection unit should insert a nop when load-use data
+hazard happens</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ld</span> <span class="n">x1</span> <span class="mi">0</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+<span class="n">add</span> <span class="n">x1</span> <span class="n">x1</span> <span class="n">x2</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>The Verilator manual contains a <a class="reference external" href="https://verilator.org/guide/latest/example_cc.html#example-c-execution">C++
-example</a>
-that you can locate. Follow the steps in the example to learn how to
-use it.</p></li>
-</ul>
+<p>Also, flush pipeline register after branch instruction once branch is
+taken. - If you follow the architecture provided above - You must
+determine if branch will take or not in ID stage.</p>
 </section>
-</section>
-<section id="full-adder-alu">
-<h2>Full Adder &amp; ALU<a class="headerlink" href="#full-adder-alu" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://hackmd.io/yqWJmbX_SfOnYJNLvbjx5Q">Report</a> ### 1. Full Adder
-Based on the circuit of the following adder, complete the circuit using
-Verilog, and create a testbench using Verilator to verify the circuit.</p>
-<img alt="https://hackmd.io/_uploads/Sk7Otri9n.png" src="https://hackmd.io/_uploads/Sk7Otri9n.png" />
-<section id="bits-alu">
-<h3>2. 4-bits ALU<a class="headerlink" href="#bits-alu" title="Link to this heading">#</a></h3>
-<p>Based on the ALU function table below, complete the full ALU circuit
-using Verilog, and create a testbench using Verilator to verify the
-circuit.</p>
-<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="c1">// file name : alu.v</span>
-<span class="c1">// You shouldn&#39;t change interface naming; otherwise, your lab0 will receive 0 points.</span>
-<span class="k">module</span><span class="w"> </span><span class="n">alu</span><span class="p">(</span><span class="k">input</span><span class="w"> </span><span class="k">signed</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">a</span><span class="p">,</span>
-<span class="w">           </span><span class="k">input</span><span class="w"> </span><span class="k">signed</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">b</span><span class="p">,</span>
-<span class="w">           </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">2</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">s</span><span class="p">,</span>
-<span class="w">           </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="k">signed</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
-
-<span class="c1">// implement your module here</span>
-
-<span class="k">endmodule</span>
-</pre></div>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The <strong>ADD</strong> and <strong>SUB</strong> operations in the ALU must use the
-completed full adder circuit.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>All operations are <strong>signed</strong> arithmetic.</p>
-</div>
-<img alt="https://hackmd.io/_uploads/S1vnnvs93.png" src="https://hackmd.io/_uploads/S1vnnvs93.png" />
-</section>
-</section>
-<hr class="docutils" />
-<section id="debug-tool">
-<h2>Debug tool<a class="headerlink" href="#debug-tool" title="Link to this heading">#</a></h2>
-<section id="gtkwave">
-<h3>GTKwave<a class="headerlink" href="#gtkwave" title="Link to this heading">#</a></h3>
-<p><a class="reference external" href="https://gtkwave.sourceforge.net/">https://gtkwave.sourceforge.net/</a></p>
-<p>Verilator support waveform tracing, enable waveform tracing through add
-code in <strong>testbench (cpp file)</strong> and compile add <strong>flag –trace</strong></p>
-<p>Using GTKwave to open <strong>.vcd</strong> file to check the waveform</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span>
-<span class="n">gtkWave</span> <span class="c1"># open UI directly</span>
-
-<span class="ow">or</span>
-
-<span class="mf">2.</span>
-<span class="n">gtkwave</span> <span class="n">xxx</span><span class="o">.</span><span class="n">vcd</span> <span class="c1"># open UI with waveform</span>
-</pre></div>
-</div>
-<img alt="https://hackmd.io/_uploads/Byh7iVCih.png" src="https://hackmd.io/_uploads/Byh7iVCih.png" />
-</section>
-</section>
-<section id="reference">
-<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference external" href="https://itsembedded.com/dhd/verilator_1/">verilator用法</a></p></li>
-</ul>
 </section>
 </section>
 
@@ -463,22 +405,13 @@ code in <strong>testbench (cpp file)</strong> and compile add <strong>flag –tr
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../class/staff.html"
+       href="Lab1.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Staff</p>
+        <p class="prev-next-title">Lab 1 : Single Cycle CPU</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="Lab%202.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Lab 2 : Single Cycle CPU</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -496,19 +429,13 @@ code in <strong>testbench (cpp file)</strong> and compile add <strong>flag –tr
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verilator">Verilator</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction">Instruction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirement">Requirement</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forwarding-unit">Forwarding Unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hazard-dectection-unit">Hazard Dectection Unit</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-adder-alu">Full Adder &amp; ALU</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bits-alu">2. 4-bits ALU</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-tool">Debug tool</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gtkwave">GTKwave</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
 </ul>
   </nav></div>
 

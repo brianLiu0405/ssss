@@ -82,12 +82,12 @@ circuit.
 
 .. warning::
 
-   :warning: The **ADD** and **SUB** operations in the ALU must use the
-   :warning: completed full adder circuit.
+   The **ADD** and **SUB** operations in the ALU must use the
+   completed full adder circuit.
 
 .. warning::
 
-   :warning: All operations are **signed** arithmetic.
+   All operations are **signed** arithmetic.
 
 .. image:: https://hackmd.io/_uploads/S1vnnvs93.png
 
