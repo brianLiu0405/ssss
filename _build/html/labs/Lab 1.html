@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Lab 4 : Advance Pipeline CPU &#8212; CSCS10014: Computer Organization</title>
+    <title>Lab 1 : Single Cycle CPU &#8212; CSCS10014: Computer Organization</title>
   
   
   
@@ -40,10 +40,11 @@
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'labs/Lab4';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'labs/Lab 1';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Lab 1 : Single Cycle CPU" href="Lab1.html" />
+    <link rel="next" title="Lab 2 : Single Cycle CPU" href="Lab%202.html" />
+    <link rel="prev" title="Lab 0 : Environment Setup &amp; simple verilog practice" href="Lab%200.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -157,11 +158,11 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Labs:</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Lab%200.html">Lab 0 : Environment Setup &amp; simple verilog practice</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lab 1 : Single Cycle CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%202.html">Lab 2 : Single Cycle CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%203.html">Lab 3 Simple Pipeline CPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lab%204.html">Lab 4 : Advance Pipeline CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%205.html">Lab 5 : Implement Cache Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Lab1.html">Lab 1 : Single Cycle CPU</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lab 4 : Advance Pipeline CPU</a></li>
 </ul>
 
     </div>
@@ -216,7 +217,7 @@
       
       
       
-      <li><a href="../_sources/labs/Lab4.rst" target="_blank"
+      <li><a href="../_sources/labs/Lab 1.rst" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -300,7 +301,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Lab 4 : Advance Pipeline CPU</h1>
+    <h1>Lab 1 : Single Cycle CPU</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -310,13 +311,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction">Instruction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirement">Requirement</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forwarding-unit">Forwarding Unit</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hazard-dectection-unit">Hazard Dectection Unit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction">Instruction</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hint">Hint</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
 </ul>
             </nav>
         </div>
@@ -328,68 +328,90 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="lab-4-advance-pipeline-cpu">
-<h1>Lab 4 : Advance Pipeline CPU<a class="headerlink" href="#lab-4-advance-pipeline-cpu" title="Link to this heading">#</a></h1>
+  <section id="lab-1-single-cycle-cpu">
+<h1>Lab 1 : Single Cycle CPU<a class="headerlink" href="#lab-1-single-cycle-cpu" title="Link to this heading">#</a></h1>
 <section id="architecture">
 <h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h2>
-<img alt="https://hackmd.io/_uploads/S1na9_i23.png" src="https://hackmd.io/_uploads/S1na9_i23.png" />
-</section>
+<p>You can follow the architecture graph to realize a single cycle CPU.
+<img alt="image1" src="https://hackmd.io/_uploads/Sy8dbBCsn.png" /></p>
 <section id="instruction">
-<h2>Instruction<a class="headerlink" href="#instruction" title="Link to this heading">#</a></h2>
-<table class="table">
-<tbody>
-<tr class="row-odd"><td><p>add</p></td>
-<td><p>or</p></td>
-<td><p>sw</p></td>
-<td><p>jal</p></td>
-</tr>
-<tr class="row-even"><td><p>addi</p></td>
-<td><p>ori</p></td>
-<td><p>beq</p></td>
-<td><p>jalr</p></td>
-</tr>
-<tr class="row-odd"><td><p>sub</p></td>
-<td><p>slt</p></td>
-<td><p>blt</p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>and</p></td>
-<td><p>slti</p></td>
-<td><p>bne</p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>andi</p></td>
-<td><p>lw</p></td>
-<td><p>bgt</p></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="requirement">
-<h2>Requirement<a class="headerlink" href="#requirement" title="Link to this heading">#</a></h2>
-<section id="forwarding-unit">
-<h3>Forwarding Unit<a class="headerlink" href="#forwarding-unit" title="Link to this heading">#</a></h3>
-<p>Forwarding Unit deals with write-use data hazard, for example, your
-design should handle the following case.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span>
-<span class="n">add</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x3</span>
-<span class="n">add</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x4</span>
-</pre></div>
+<h3>Instruction<a class="headerlink" href="#instruction" title="Link to this heading">#</a></h3>
+<div class="info docutils container">
+<p>All operation are signed</p>
 </div>
-</section>
-<section id="hazard-dectection-unit">
-<h3>Hazard Dectection Unit<a class="headerlink" href="#hazard-dectection-unit" title="Link to this heading">#</a></h3>
-<p>Your hazard dectection unit should insert a nop when load-use data
-hazard happens</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ld</span> <span class="n">x1</span> <span class="mi">0</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-<span class="n">add</span> <span class="n">x1</span> <span class="n">x1</span> <span class="n">x2</span>
-</pre></div>
+<p>Implement following instructions. RV32I ISA Layout is provided below. -
+[x] add - [x] addi - [x] sub - [x] and - [x] andi - [x] or - [x] ori -
+[x] slt - [x] slti - [x] lw - [x] sw - [x] beq</p>
+<hr class="docutils" />
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You must follow this ISA table to implement</p>
 </div>
-<p>Also, flush pipeline register after branch instruction once branch is
-taken. - If you follow the architecture provided above - You must
-determine if branch will take or not in ID stage.</p>
+<img alt="https://hackmd.io/_uploads/HkbSaU1i3.png" src="https://hackmd.io/_uploads/HkbSaU1i3.png" />
+<!-- ## Example machine code
+```ass
+addi s0, zero, 163
+addi sp, sp, -4
+sw s0, 0(sp)
+add s0, zero, zero
+addi t0, zero, 0
+LOOP:
+   slti t1, t0, 7
+   beq t1, zero, EXIT
+   addi t0, t0, 1
+   beq zero, zero, LOOP
+EXIT:
+    ori t1, t1, 10
+    lw s0, 0(sp)
+    addi sp, sp, 4
+```
+We can convert assembly through some software, this example uses Ripes
+```
+    0:  00001010001100000000010000010011
+    4:  11111111110000010000000100010011
+    8:  00000000100000010010000000100011
+    c:  00000000000000000000010000110011
+    10: 00000000000000000000001010010011
+00000014 <LOOP>:
+    14: 00000000011100101010001100010011
+    18: 00000000000000110000011001100011
+    1c: 00000000000100101000001010010011
+    20: 11111110000000000000101011100011
+00000024 <EXIT>:
+    24: 00000000101000110110001100010011
+    28: 00000000000000010010010000000011
+    2c: 00000000010000010000000100010011
+```
+Convert machine code above to binary file like
+```
+00001010
+00110000
+...
+...
+00000001
+00010011
+```
+Now you can load data into instruction memory with `$readmeh("TEST_INSTRUCTION.txt", inst_mem)` in verilog
+
+Check if the value in register is correct or not after running your CPU.
+:::warning
+Download this machine code =====>[TEST_INSTRUCTION.txt](https://drive.google.com/file/d/1ZjEUtUoNKgfei29mwk4N1DpltN3ITinD/view?usp=sharing)<=====
+::: --></section>
 </section>
+<section id="hint">
+<h2>Hint<a class="headerlink" href="#hint" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Read textbook first, understand each submodule’s functionality.</p></li>
+<li><p>Debugging with waveform makes your life easier.</p></li>
+<li><p>Try to generate your own risc-v machine code with Ripe, you can write
+simple assembly to verify if your code runs as expect.</p></li>
+</ul>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">#</a></h2>
+<p>Computer Organization and Design RISC-V Edition, CH4
+<a class="reference external" href="https://github.com/mortbopet/Ripes">Ripes</a> <a class="reference external" href="http://riscvbook.com/">RISC-V
+Reader</a></p>
 </section>
 </section>
 
@@ -405,13 +427,22 @@ determine if branch will take or not in ID stage.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="Lab1.html"
+       href="Lab%200.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Lab 1 : Single Cycle CPU</p>
+        <p class="prev-next-title">Lab 0 : Environment Setup &amp; simple verilog practice</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="Lab%202.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lab 2 : Single Cycle CPU</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -429,13 +460,12 @@ determine if branch will take or not in ID stage.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction">Instruction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirement">Requirement</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forwarding-unit">Forwarding Unit</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hazard-dectection-unit">Hazard Dectection Unit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction">Instruction</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hint">Hint</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
 </ul>
   </nav></div>
 
