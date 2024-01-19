@@ -1,5 +1,5 @@
-Environment Setup & simple verilog practice
-===========================================
+Lab 0 : Environment Setup & simple verilog practice
+===================================================
 
 Verilator
 ---------
