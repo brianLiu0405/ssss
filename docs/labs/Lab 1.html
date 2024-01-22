@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Lab 1 : Single Cycle CPU &#8212; CSCS10014: Computer Organization</title>
+    <title>Lab 1 Single Cycle CPU w/ Simple RISC-V Instruction &#8212; CSCS10014: Computer Organization</title>
   
   
   
@@ -158,12 +158,11 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Labs:</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Lab%200.html">Lab 0 : Environment Setup &amp; simple verilog practice</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lab 1 : Single Cycle CPU</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lab 1 Single Cycle CPU w/ Simple RISC-V Instruction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%202.html">Lab 2 : Single Cycle CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%203.html">Lab 3 Simple Pipeline CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%204.html">Lab 4 : Advance Pipeline CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%205.html">Lab 5 : Implement Cache Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="LabK%20Single%20Cycle%20CPU.html">Lab 1 Single Cycle CPU w/ Simple RISC-V Instruction</a></li>
 </ul>
 
     </div>
@@ -302,7 +301,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Lab 1 : Single Cycle CPU</h1>
+    <h1>Lab 1 Single Cycle CPU w/ Simple RISC-V Instruction</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -312,10 +311,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lab-source-code">Lab source code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ripes">Ripes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#single-cycle-cpu">Single Cycle CPU</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction">Instruction</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirement">Requirement</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hint">Hint</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
 </ul>
@@ -329,75 +333,119 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="lab-1-single-cycle-cpu">
-<h1>Lab 1 : Single Cycle CPU<a class="headerlink" href="#lab-1-single-cycle-cpu" title="Link to this heading">#</a></h1>
+  <section id="lab-1-single-cycle-cpu-w-simple-risc-v-instruction">
+<h1>Lab 1 Single Cycle CPU w/ Simple RISC-V Instruction<a class="headerlink" href="#lab-1-single-cycle-cpu-w-simple-risc-v-instruction" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>In Lab1, you are asked to implement your Single Cycle CPU based on
+RISC-V ISA. After finished this lab, you should be more familiar with
+CPU architecture and RISC-V.</p>
+<p>Don’t be panic, this lab is not that hard as you think. To implement
+RISC-V CPU, you are encouraged to study what each component does, then
+how they coorperate. We also introduce an useful RISC-V simulator,
+Ripes, which can show the workflow of CPU step by step.</p>
+</section>
+<section id="lab-source-code">
+<h2>Lab source code<a class="headerlink" href="#lab-source-code" title="Link to this heading">#</a></h2>
+<p>TAs have prepare
+<a class="reference external" href="https://github.com/nycu-caslab/CO2024_source/tree/main/lab1">template</a>,
+you can follow the template or modify as you wish. However, the there
+are somethings you shouln’t change. - Register - Instruction Memory -
+Data Memory - CPU I/O interface and register instance name</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The rst signal is <strong>active low</strong>, which means the module will reset
+if the rst signal is zero. And you should follow this design.</p>
+</div>
+</section>
+<section id="ripes">
+<h2>Ripes<a class="headerlink" href="#ripes" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/mortbopet/Ripes">Ripes</a> is a visual computer
+architecture simulator and assembly code editor built for the RISC-V
+instruction set architecture. Please read the document via hyperlink.</p>
+<figure class="align-default" id="id1">
+<img alt="2024-01-22 14-29-38 的螢幕擷圖" src="https://hackmd.io/_uploads/HkuwstjKT.png" />
+<figcaption>
+<p><span class="caption-text">2024-01-22 14-29-38 的螢幕擷圖</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>As the picture above, you can write you own assembly code then clock the
+processor, then check the right register values.</p>
+<p>You can copy generated machine code to <code class="docutils literal notranslate"><span class="pre">TEST_INSTRUCTIONS.txt</span></code> in the
+following format to run your code on your CPU design. Each line in file
+has 8 bits, a 4 bytes instruction represented by 4 lines. The file
+should end with a new empty line.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">00001010</span>
+<span class="mi">00110000</span>
+<span class="mi">00000100</span>
+<span class="mi">00010011</span>
+<span class="mi">11111111</span>
+<span class="mi">11000001</span>
+<span class="mi">00000001</span>
+<span class="mi">00010011</span>
+<span class="mi">00000000</span>
+<span class="mi">10000001</span>
+<span class="mi">00100000</span>
+<span class="mi">00100011</span>
+<span class="mi">00000000</span>
+<span class="mi">00000000</span>
+<span class="mi">00000100</span>
+<span class="mi">00110011</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="single-cycle-cpu">
+<h2>Single Cycle CPU<a class="headerlink" href="#single-cycle-cpu" title="Link to this heading">#</a></h2>
 <section id="architecture">
-<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h2>
+<h3>Architecture<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h3>
 <p>You can follow the architecture graph to realize a single cycle CPU.
 <img alt="image1" src="https://hackmd.io/_uploads/Sy8dbBCsn.png" /></p>
+</section>
 <section id="instruction">
 <h3>Instruction<a class="headerlink" href="#instruction" title="Link to this heading">#</a></h3>
 <div class="info docutils container">
 <p>All operation are signed</p>
 </div>
 <p>Implement following instructions. RV32I ISA Layout is provided below. -
-[x] add - [x] addi - [x] sub - [x] and - [x] andi - [x] or - [x] ori -
-[x] slt - [x] slti - [x] lw - [x] sw - [x] beq</p>
+add <img alt="image" src="https://hackmd.io/_uploads/S1U6FtsYa.png%20=80%x" /></p>
+<ul class="simple">
+<li><p>addi <img alt="image2" src="https://hackmd.io/_uploads/ryiRcFitT.png%20=80%x" /></p></li>
+<li><p>sub <img alt="image3" src="https://hackmd.io/_uploads/ryHUqtjFa.png%20=80%x" /></p></li>
+<li><p>and <img alt="image4" src="https://hackmd.io/_uploads/rJQdcYiFa.png%20=80%x" /></p></li>
+<li><p>andi <img alt="image5" src="https://hackmd.io/_uploads/SJ7eiKjYT.png%20=80%x" /></p></li>
+<li><p>or <img alt="image6" src="https://hackmd.io/_uploads/BJZ9qYjta.png%20=80%x" /></p></li>
+<li><p>ori <img alt="image7" src="https://hackmd.io/_uploads/Hy3yiFiFa.png%20=80%x" /></p></li>
+<li><p>slt <img alt="image8" src="https://hackmd.io/_uploads/r1YSqKst6.png%20=80%x" /></p></li>
+<li><p>slti <img alt="image9" src="https://hackmd.io/_uploads/HJcbotjYT.png%20=80%x" /></p></li>
+<li><p>lw <img alt="image10" src="https://hackmd.io/_uploads/SJ0sctstT.png%20=80%x" /></p></li>
+<li><p>sw <img alt="image11" src="https://hackmd.io/_uploads/r1i25toYa.png%20=80%x" /></p></li>
+<li><p>beq <img alt="image12" src="https://hackmd.io/_uploads/BJIMoKiYp.png%20=80%x" /></p></li>
+</ul>
 <hr class="docutils" />
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>You must follow this ISA table to implement</p>
 </div>
-<img alt="https://hackmd.io/_uploads/HkbSaU1i3.png" src="https://hackmd.io/_uploads/HkbSaU1i3.png" />
-<!-- ## Example machine code
-```ass
-addi s0, zero, 163
-addi sp, sp, -4
-sw s0, 0(sp)
-add s0, zero, zero
-addi t0, zero, 0
-LOOP:
-   slti t1, t0, 7
-   beq t1, zero, EXIT
-   addi t0, t0, 1
-   beq zero, zero, LOOP
-EXIT:
-    ori t1, t1, 10
-    lw s0, 0(sp)
-    addi sp, sp, 4
-```
-We can convert assembly through some software, this example uses Ripes
-```
-    0:  00001010001100000000010000010011
-    4:  11111111110000010000000100010011
-    8:  00000000100000010010000000100011
-    c:  00000000000000000000010000110011
-    10: 00000000000000000000001010010011
-00000014 <LOOP>:
-    14: 00000000011100101010001100010011
-    18: 00000000000000110000011001100011
-    1c: 00000000000100101000001010010011
-    20: 11111110000000000000101011100011
-00000024 <EXIT>:
-    24: 00000000101000110110001100010011
-    28: 00000000000000010010010000000011
-    2c: 00000000010000010000000100010011
-```
-Convert machine code above to binary file like
-```
-00001010
-00110000
-...
-...
-00000001
-00010011
-```
-Now you can load data into instruction memory with `$readmeh("TEST_INSTRUCTION.txt", inst_mem)` in verilog
-
-Check if the value in register is correct or not after running your CPU.
-:::warning
-Download this machine code =====>[TEST_INSTRUCTION.txt](https://drive.google.com/file/d/1ZjEUtUoNKgfei29mwk4N1DpltN3ITinD/view?usp=sharing)<=====
-::: --></section>
+<p><img alt="image13" src="https://hackmd.io/_uploads/HkbSaU1i3.png" /></p>
+</section>
+</section>
+<section id="requirement">
+<h2>Requirement<a class="headerlink" href="#requirement" title="Link to this heading">#</a></h2>
+<p>Implement your RISC-V single cycle CPU, your CPU should be able to
+support following RISC-V ISA - add, addi, sub, and, andi, or, ori - slt,
+slti - lw, sw, beq</p>
+<p>TAs have prepare verilator testbench and some <code class="docutils literal notranslate"><span class="pre">TEST_INSTRUCTION.txt</span></code>
+to grade your design. We will verify correctness by comparing register
+value, so
+.. warning:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Don’t modify register, instruction memory and CPU interface, or you will get 0 points.
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Reset signal <code class="docutils literal notranslate"><span class="pre">rst</span></code> should be active low.</p>
+</div>
 </section>
 <section id="hint">
 <h2>Hint<a class="headerlink" href="#hint" title="Link to this heading">#</a></h2>
@@ -411,8 +459,9 @@ simple assembly to verify if your code runs as expect.</p></li>
 <section id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">#</a></h2>
 <p>Computer Organization and Design RISC-V Edition, CH4
-<a class="reference external" href="https://github.com/mortbopet/Ripes">Ripes</a> <a class="reference external" href="http://riscvbook.com/">RISC-V
-Reader</a></p>
+<a class="reference external" href="https://github.com/mortbopet/Ripes">Ripes</a>
+<a class="reference external" href="http://riscvbook.com/">RISC-VReader</a>
+<a class="reference external" href="https://msyksphinz-self.github.io/riscv-isadoc/html/rvi.html">riscv-isa-pages</a></p>
 </section>
 </section>
 
@@ -461,10 +510,15 @@ Reader</a></p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lab-source-code">Lab source code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ripes">Ripes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#single-cycle-cpu">Single Cycle CPU</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction">Instruction</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirement">Requirement</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hint">Hint</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
 </ul>
