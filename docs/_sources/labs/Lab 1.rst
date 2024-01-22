@@ -89,62 +89,62 @@ Implement following instructions. RV32I ISA Layout is provided below.
 - add
 
 .. image:: images/add.png
-    :scale: 80%
+    
 
 - addi
 
 .. image:: images/addi.png
-    :scale: 80%
+    
 
 - sub
 
 .. image:: images/sub.png
-    :scale: 80%
+    
 
 - and
 
 .. image:: images/and.png
-    :scale: 80%
+    
 
 - andi
 
 .. image:: images/andi.png
-    :scale: 80%
+    
 
 - or
 
 .. image:: images/or.png
-    :scale: 80%
+    
 
 - ori
 
 .. image:: images/ori.png
-    :scale: 80%
+    
 
 - slt
 
 .. image:: images/slt.png
-    :scale: 80%
+    
 
 - slti
 
 .. image:: images/slti.png
-    :scale: 80%
+    
 
 - lw
 
 .. image:: images/lw.png
-    :scale: 80%
+    
 
 - sw
 
 .. image:: images/sw.png
-    :scale: 80%
+    
 
 - beq
 
 .. image:: images/beq.png
-    :scale: 80%
+    
 
 
 --------------
