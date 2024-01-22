@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Lab 0 : Environment Setup &amp; simple verilog practice &#8212; CSCS10014: Computer Organization</title>
+    <title>Lab 1 Single Cycle CPU w/ Simple RISC-V Instruction &#8212; CSCS10014: Computer Organization</title>
   
   
   
@@ -40,11 +40,10 @@
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'labs/Lab 0';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'labs/LabK Single Cycle CPU';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Lab 1 : Single Cycle CPU" href="Lab%201.html" />
-    <link rel="prev" title="Staff" href="../class/staff.html" />
+    <link rel="prev" title="Lab 5 : Implement Cache Manager" href="Lab%205.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -157,13 +156,13 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Labs:</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lab 0 : Environment Setup &amp; simple verilog practice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lab%200.html">Lab 0 : Environment Setup &amp; simple verilog practice</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%201.html">Lab 1 : Single Cycle CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%202.html">Lab 2 : Single Cycle CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%203.html">Lab 3 Simple Pipeline CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%204.html">Lab 4 : Advance Pipeline CPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Lab%205.html">Lab 5 : Implement Cache Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="LabK%20Single%20Cycle%20CPU.html">Lab 1 Single Cycle CPU w/ Simple RISC-V Instruction</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Lab 1 Single Cycle CPU w/ Simple RISC-V Instruction</a></li>
 </ul>
 
     </div>
@@ -218,7 +217,7 @@
       
       
       
-      <li><a href="../_sources/labs/Lab 0.rst" target="_blank"
+      <li><a href="../_sources/labs/LabK Single Cycle CPU.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -228,7 +227,7 @@
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.rst</span>
+<span class="btn__text-container">.md</span>
 </a>
 </li>
       
@@ -302,7 +301,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Lab 0 : Environment Setup & simple verilog practice</h1>
+    <h1>Lab 1 Single Cycle CPU w/ Simple RISC-V Instruction</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -312,18 +311,16 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verilator">Verilator</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lab-source-code">Lab source code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ripes">Ripes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#single-cycle-cpu">Single Cycle CPU</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction">Instruction</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-adder-alu">Full Adder &amp; ALU</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bits-alu">2. 4-bits ALU</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-tool">Debug tool</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gtkwave">GTKwave</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirement">Requirement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hint">Hint</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
 </ul>
             </nav>
@@ -336,119 +333,180 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="lab-0-environment-setup-simple-verilog-practice">
-<h1>Lab 0 : Environment Setup &amp; simple verilog practice<a class="headerlink" href="#lab-0-environment-setup-simple-verilog-practice" title="Link to this heading">#</a></h1>
-<section id="verilator">
-<h2>Verilator<a class="headerlink" href="#verilator" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://www.veripool.org/verilator/">Verilator</a> is an open-source
-Verilog simulation tool that you will use for RTL functional simulation
-to validate the RTL code you have written.</p>
-<section id="installation">
-<h3>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h3>
+  <section id="lab-1-single-cycle-cpu-w-simple-risc-v-instruction">
+<h1>Lab 1 Single Cycle CPU w/ Simple RISC-V Instruction<a class="headerlink" href="#lab-1-single-cycle-cpu-w-simple-risc-v-instruction" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>In Lab1, you are asked to implement your Single Cycle CPU based on RISC-V ISA. After finished this lab, you should be more familiar with CPU architecture and RISC-V.</p>
+<p>Don’t be panic, this lab is not that hard as you think. To implement RISC-V CPU, you are encouraged to study what each component does, then how they coorperate. We also introduce an useful RISC-V simulator, Ripes, which can show the workflow of CPU step by step.</p>
+</section>
+<section id="lab-source-code">
+<h2>Lab source code<a class="headerlink" href="#lab-source-code" title="Link to this heading">#</a></h2>
+<p>TAs have prepare <a class="reference external" href="https://github.com/nycu-caslab/CO2024_source/tree/main/lab1">template</a>, you can follow the template or modify as you wish. However, the there are somethings you shouln’t change.</p>
 <ul class="simple">
-<li><p>How to install : <a class="reference external" href="https://verilator.org/guide/latest/install.html">https://verilator.org/guide/latest/install.html</a>
-(Recommended to install in the Ubuntu environment.)</p></li>
+<li><p>Register</p></li>
+<li><p>Instruction Memory</p></li>
+<li><p>Data Memory</p></li>
+<li><p>CPU I/O interface and register instance name</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Prerequisites:
-sudo apt-get install git perl python3 make autoconf g++ flex bison ccache
-sudo apt-get install libgoogle-perftools-dev numactl perl-doc
-sudo apt-get install libfl2  # Ubuntu only (ignore if gives error)
-sudo apt-get install libfl-dev  # Ubuntu only (ignore if gives error)
-sudo apt-get install zlibc zlib1g zlib1g-dev  # Ubuntu only (ignore if gives error)
+<p>:::warning
+The rst signal is <strong>active low</strong>, which means the module will reset if the rst signal is zero. And you should follow this design.
+:::</p>
+</section>
+<section id="ripes">
+<h2>Ripes<a class="headerlink" href="#ripes" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/mortbopet/Ripes">Ripes</a> is a visual computer architecture simulator and assembly code editor built for the RISC-V instruction set architecture. Please read the document via hyperlink.</p>
+<p><img alt="2024-01-22 14-29-38 的螢幕擷圖" src="https://hackmd.io/_uploads/HkuwstjKT.png" /></p>
+<p>As the picture above, you can write you own assembly code then clock the processor, then check the right register values.</p>
+<p>You can copy generated machine code to <code class="docutils literal notranslate"><span class="pre">TEST_INSTRUCTIONS.txt</span></code> in the following format to run your code on your CPU design. Each line in file has 8 bits, a 4 bytes instruction represented by 4 lines. The file should end with a new empty line.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">00001010</span>
+<span class="mi">00110000</span>
+<span class="mi">00000100</span>
+<span class="mi">00010011</span>
+<span class="mi">11111111</span>
+<span class="mi">11000001</span>
+<span class="mi">00000001</span>
+<span class="mi">00010011</span>
+<span class="mi">00000000</span>
+<span class="mi">10000001</span>
+<span class="mi">00100000</span>
+<span class="mi">00100011</span>
+<span class="mi">00000000</span>
+<span class="mi">00000000</span>
+<span class="mi">00000100</span>
+<span class="mi">00110011</span>
 
-git clone https://github.com/verilator/verilator   # Only first time
-
-# Every time you need to build:
-unsetenv VERILATOR_ROOT  # For csh; ignore error if on bash
-unset VERILATOR_ROOT  # For bash
-cd verilator
-git pull         # Make sure git repository is up-to-date
-git tag          # See what versions exist
-git checkout v5.008  # Switch to specified release version
-
-autoconf         # Create ./configure script
-./configure      # Configure and create Makefile
-make -j `nproc`  # Build Verilator itself (if error, try just &#39;make&#39;)
-sudo make install
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>You need to install version <strong>5.008</strong>. After a successful
-installation, run the following command to check if the installation
-was successful and if the version is correct.</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">verilator</span> <span class="o">--</span><span class="n">version</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>The Verilator manual contains a <a class="reference external" href="https://verilator.org/guide/latest/example_cc.html#example-c-execution">C++
-example</a>
-that you can locate. Follow the steps in the example to learn how to
-use it.</p></li>
-</ul>
-</section>
-</section>
-<section id="full-adder-alu">
-<h2>Full Adder &amp; ALU<a class="headerlink" href="#full-adder-alu" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://hackmd.io/yqWJmbX_SfOnYJNLvbjx5Q">Report</a> ### 1. Full Adder
-Based on the circuit of the following adder, complete the circuit using
-Verilog, and create a testbench using Verilator to verify the circuit.</p>
-<img alt="https://hackmd.io/_uploads/Sk7Otri9n.png" src="https://hackmd.io/_uploads/Sk7Otri9n.png" />
-<section id="bits-alu">
-<h3>2. 4-bits ALU<a class="headerlink" href="#bits-alu" title="Link to this heading">#</a></h3>
-<p>Based on the ALU function table below, complete the full ALU circuit
-using Verilog, and create a testbench using Verilator to verify the
-circuit.</p>
-<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="c1">// file name : alu.v</span>
-<span class="c1">// You shouldn&#39;t change interface naming; otherwise, your lab0 will receive 0 points.</span>
-<span class="k">module</span><span class="w"> </span><span class="n">alu</span><span class="p">(</span><span class="k">input</span><span class="w"> </span><span class="k">signed</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">a</span><span class="p">,</span>
-<span class="w">           </span><span class="k">input</span><span class="w"> </span><span class="k">signed</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">b</span><span class="p">,</span>
-<span class="w">           </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">2</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">s</span><span class="p">,</span>
-<span class="w">           </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="k">signed</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
-
-<span class="c1">// implement your module here</span>
-
-<span class="k">endmodule</span>
-</pre></div>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The <strong>ADD</strong> and <strong>SUB</strong> operations in the ALU must use the
-completed full adder circuit.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>All operations are <strong>signed</strong> arithmetic.</p>
-</div>
-<img alt="https://hackmd.io/_uploads/S1vnnvs93.png" src="https://hackmd.io/_uploads/S1vnnvs93.png" />
-</section>
 </section>
 <hr class="docutils" />
-<section id="debug-tool">
-<h2>Debug tool<a class="headerlink" href="#debug-tool" title="Link to this heading">#</a></h2>
-<section id="gtkwave">
-<h3>GTKwave<a class="headerlink" href="#gtkwave" title="Link to this heading">#</a></h3>
-<p><a class="reference external" href="https://gtkwave.sourceforge.net/">https://gtkwave.sourceforge.net/</a></p>
-<p>Verilator support waveform tracing, enable waveform tracing through add
-code in <strong>testbench (cpp file)</strong> and compile add <strong>flag –trace</strong></p>
-<p>Using GTKwave to open <strong>.vcd</strong> file to check the waveform</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span>
-<span class="n">gtkWave</span> <span class="c1"># open UI directly</span>
-
-<span class="ow">or</span>
-
-<span class="mf">2.</span>
-<span class="n">gtkwave</span> <span class="n">xxx</span><span class="o">.</span><span class="n">vcd</span> <span class="c1"># open UI with waveform</span>
-</pre></div>
-</div>
-<img alt="https://hackmd.io/_uploads/Byh7iVCih.png" src="https://hackmd.io/_uploads/Byh7iVCih.png" />
+<section id="single-cycle-cpu">
+<h2>Single Cycle CPU<a class="headerlink" href="#single-cycle-cpu" title="Link to this heading">#</a></h2>
+<section id="architecture">
+<h3>Architecture<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h3>
+<p>You can follow the architecture graph to realize a single cycle CPU.</p>
+<!-- ![](https://hackmd.io/_uploads/r1ocUvCcn.png) -->
+<p><img alt="" src="https://hackmd.io/_uploads/Sy8dbBCsn.png" /></p>
 </section>
+<section id="instruction">
+<h3>Instruction<a class="headerlink" href="#instruction" title="Link to this heading">#</a></h3>
+<p>::: info
+:bulb: All operation are signed
+:::</p>
+<p>Implement following instructions. RV32I ISA Layout is provided below.</p>
+<ul class="simple">
+<li><p>add
+![image](https://hackmd.io/_uploads/S1U6FtsYa.png =80%x)</p></li>
+<li><p>addi
+![image](https://hackmd.io/_uploads/ryiRcFitT.png =80%x)</p></li>
+<li><p>sub
+![image](https://hackmd.io/_uploads/ryHUqtjFa.png =80%x)</p></li>
+<li><p>and
+![image](https://hackmd.io/_uploads/rJQdcYiFa.png =80%x)</p></li>
+<li><p>andi
+![image](https://hackmd.io/_uploads/SJ7eiKjYT.png =80%x)</p></li>
+<li><p>or
+![image](https://hackmd.io/_uploads/BJZ9qYjta.png =80%x)</p></li>
+<li><p>ori
+![image](https://hackmd.io/_uploads/Hy3yiFiFa.png =80%x)</p></li>
+<li><p>slt
+![image](https://hackmd.io/_uploads/r1YSqKst6.png =80%x)</p></li>
+<li><p>slti
+![image](https://hackmd.io/_uploads/HJcbotjYT.png =80%x)</p></li>
+<li><p>lw
+![image](https://hackmd.io/_uploads/SJ0sctstT.png =80%x)</p></li>
+<li><p>sw
+![image](https://hackmd.io/_uploads/r1i25toYa.png =80%x)</p></li>
+<li><p>beq
+![image](https://hackmd.io/_uploads/BJIMoKiYp.png =80%x)</p></li>
+</ul>
+<hr class="docutils" />
+<p>:::warning
+:warning: You must follow this ISA table to implement
+:::
+<img alt="" src="https://hackmd.io/_uploads/HkbSaU1i3.png" /></p>
+<!-- 
+## Example machine code
+```ass
+addi s0, zero, 163
+addi sp, sp, -4
+sw s0, 0(sp)
+add s0, zero, zero
+addi t0, zero, 0
+LOOP:
+   slti t1, t0, 7
+   beq t1, zero, EXIT
+   addi t0, t0, 1
+   beq zero, zero, LOOP
+EXIT:
+    ori t1, t1, 10
+    lw s0, 0(sp)
+    addi sp, sp, 4
+```
+We can convert assembly through some software, this example uses Ripes
+```
+    0:  00001010001100000000010000010011
+    4:  11111111110000010000000100010011
+    8:  00000000100000010010000000100011
+    c:  00000000000000000000010000110011
+    10: 00000000000000000000001010010011
+00000014 <LOOP>:
+    14: 00000000011100101010001100010011
+    18: 00000000000000110000011001100011
+    1c: 00000000000100101000001010010011
+    20: 11111110000000000000101011100011
+00000024 <EXIT>:
+    24: 00000000101000110110001100010011
+    28: 00000000000000010010010000000011
+    2c: 00000000010000010000000100010011
+```
+Convert machine code above to binary file like
+```
+00001010
+00110000
+...
+...
+00000001
+00010011
+```
+Now you can load data into instruction memory with `$readmeh("TEST_INSTRUCTION.txt", inst_mem)` in verilog
+
+Check if the value in register is correct or not after running your CPU.
+:::warning
+:warning: Download this machine code =====>[TEST_INSTRUCTION.txt](https://drive.google.com/file/d/1ZjEUtUoNKgfei29mwk4N1DpltN3ITinD/view?usp=sharing)<=====
+::: -->
+</section>
+</section>
+<section id="requirement">
+<h2>Requirement<a class="headerlink" href="#requirement" title="Link to this heading">#</a></h2>
+<p>Implement your RISC-V single cycle CPU, your CPU should be able to support following RISC-V ISA</p>
+<ul class="simple">
+<li><p>add, addi, sub, and, andi, or, ori</p></li>
+<li><p>slt, slti</p></li>
+<li><p>lw, sw, beq</p></li>
+</ul>
+<p>TAs have prepare verilator testbench and some <code class="docutils literal notranslate"><span class="pre">TEST_INSTRUCTION.txt</span></code> to grade your design. We will verify correctness by comparing register value, so
+:::warning
+:warning: Don’t modify register, instruction memory and CPU interface, or you will get 0 points.
+:::
+:::warning
+:warning: Reset signal <code class="docutils literal notranslate"><span class="pre">rst</span></code> should be active low.
+:::</p>
+</section>
+<section id="hint">
+<h2>Hint<a class="headerlink" href="#hint" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Read textbook first, understand each submodule’s functionality.</p></li>
+<li><p>Debugging with waveform makes your life easier.</p></li>
+<li><p>Try to generate your own risc-v machine code with Ripe, you can write simple assembly to verify if your code runs as expect.</p></li>
+</ul>
 </section>
 <section id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference external" href="https://itsembedded.com/dhd/verilator_1/">verilator用法</a></p></li>
-</ul>
+<p>Computer Organization and Design RISC-V Edition, CH4
+<a class="reference external" href="https://github.com/mortbopet/Ripes">Ripes</a>
+<a class="reference external" href="http://riscvbook.com/">RISC-V Reader</a>
+<a class="reference external" href="https://msyksphinz-self.github.io/riscv-isadoc/html/rvi.html">riscv-isa-pages</a></p>
 </section>
 </section>
 
@@ -464,22 +522,13 @@ code in <strong>testbench (cpp file)</strong> and compile add <strong>flag –tr
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../class/staff.html"
+       href="Lab%205.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Staff</p>
+        <p class="prev-next-title">Lab 5 : Implement Cache Manager</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="Lab%201.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Lab 1 : Single Cycle CPU</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -497,18 +546,16 @@ code in <strong>testbench (cpp file)</strong> and compile add <strong>flag –tr
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verilator">Verilator</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lab-source-code">Lab source code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ripes">Ripes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#single-cycle-cpu">Single Cycle CPU</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instruction">Instruction</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-adder-alu">Full Adder &amp; ALU</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bits-alu">2. 4-bits ALU</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-tool">Debug tool</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gtkwave">GTKwave</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirement">Requirement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hint">Hint</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
 </ul>
   </nav></div>
