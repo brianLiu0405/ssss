@@ -88,273 +88,273 @@ Implement following instructions. RV32I ISA Layout is provided below.
 
 - add
 
-  .. tabularcolumns:: |c|c|c|c|c|c|c|c|
-  .. table::
+.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+.. table::
 
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |00000|00   |rs2  |rs1  |000  |rd   |01100|11 |
-    +-----+-----+-----+-----+-----+-----+-----+---+
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |00000|00   |rs2  |rs1  |000  |rd   |01100|11 |
+  +-----+-----+-----+-----+-----+-----+-----+---+
 
 
 
-  :Format:
-    | add        rd,rs1,rs2
+:Format:
+  | add        rd,rs1,rs2
 
-  :Description:
-    | Adds the registers rs1 and rs2 and stores the result in rd.
-    | Arithmetic overflow is ignored and the result is simply the low XLEN bits of the result.
+:Description:
+  | Adds the registers rs1 and rs2 and stores the result in rd.
+  | Arithmetic overflow is ignored and the result is simply the low XLEN bits of the result.
 
-  :Implementation:
-    | x[rd] = x[rs1] + x[rs2]
+:Implementation:
+  | x[rd] = x[rs1] + x[rs2]
 
 - addi
 
-  add immediate
+add immediate
 
-  .. tabularcolumns:: |c|c|c|c|c|c|c|c|
-  .. table::
+.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+.. table::
 
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |imm[11:0]        |rs1  |000  |rd   |00100|11 |
-    +-----+-----+-----+-----+-----+-----+-----+---+
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |imm[11:0]        |rs1  |000  |rd   |00100|11 |
+  +-----+-----+-----+-----+-----+-----+-----+---+
 
 
 
-  :Format:
-    | addi       rd,rs1,imm
+:Format:
+  | addi       rd,rs1,imm
 
-  :Description:
-    | Adds the sign-extended 12-bit immediate to register rs1. Arithmetic overflow is ignored and the result is simply the low XLEN bits of the result. ADDI rd, rs1, 0 is used to implement the MV rd, rs1 assembler pseudo-instruction.
+:Description:
+  | Adds the sign-extended 12-bit immediate to register rs1. Arithmetic overflow is ignored and the result is simply the low XLEN bits of the result. ADDI rd, rs1, 0 is used to implement the MV rd, rs1 assembler pseudo-instruction.
 
-  :Implementation:
-    | x[rd] = x[rs1] + sext(immediate)
+:Implementation:
+  | x[rd] = x[rs1] + sext(immediate)
 
 - sub
 
-  .. tabularcolumns:: |c|c|c|c|c|c|c|c|
-  .. table::
+.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+.. table::
 
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |01000|00   |rs2  |rs1  |000  |rd   |01100|11 |
-    +-----+-----+-----+-----+-----+-----+-----+---+
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |01000|00   |rs2  |rs1  |000  |rd   |01100|11 |
+  +-----+-----+-----+-----+-----+-----+-----+---+
 
 
 
-  :Format:
-    | sub        rd,rs1,rs2
+:Format:
+  | sub        rd,rs1,rs2
 
-  :Description:
-    | Subs the register rs2 from rs1 and stores the result in rd.
-    | Arithmetic overflow is ignored and the result is simply the low XLEN bits of the result.
+:Description:
+  | Subs the register rs2 from rs1 and stores the result in rd.
+  | Arithmetic overflow is ignored and the result is simply the low XLEN bits of the result.
 
-  :Implementation:
-    | x[rd] = x[rs1] - x[rs2]
+:Implementation:
+  | x[rd] = x[rs1] - x[rs2]
 
 - and
 
-  .. tabularcolumns:: |c|c|c|c|c|c|c|c|
-  .. table::
+.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+.. table::
 
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |00000|00   |rs2  |rs1  |111  |rd   |01100|11 |
-    +-----+-----+-----+-----+-----+-----+-----+---+
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |00000|00   |rs2  |rs1  |111  |rd   |01100|11 |
+  +-----+-----+-----+-----+-----+-----+-----+---+
 
 
 
-  :Format:
-    | and        rd,rs1,rs2
+:Format:
+  | and        rd,rs1,rs2
 
-  :Description:
-    | Performs bitwise AND on registers rs1 and rs2 and place the result in rd
+:Description:
+  | Performs bitwise AND on registers rs1 and rs2 and place the result in rd
 
-  :Implementation:
-    | x[rd] = x[rs1] & x[rs2]
+:Implementation:
+  | x[rd] = x[rs1] & x[rs2]
 
 - andi
 
-  .. tabularcolumns:: |c|c|c|c|c|c|c|c|
-  .. table::
+.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+.. table::
 
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |imm[11:0]        |rs1  |111  |rd   |00100|11 |
-    +-----+-----+-----+-----+-----+-----+-----+---+
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |imm[11:0]        |rs1  |111  |rd   |00100|11 |
+  +-----+-----+-----+-----+-----+-----+-----+---+
 
 
 
-  :Format:
-    | andi       rd,rs1,imm
+:Format:
+  | andi       rd,rs1,imm
 
-  :Description:
-    | Performs bitwise AND on register rs1 and the sign-extended 12-bit immediate and place the result in rd
+:Description:
+  | Performs bitwise AND on register rs1 and the sign-extended 12-bit immediate and place the result in rd
 
-  :Implementation:
-    | x[rd] = x[rs1] & sext(immediate)
+:Implementation:
+  | x[rd] = x[rs1] & sext(immediate)
 
 - or
 
-  .. tabularcolumns:: |c|c|c|c|c|c|c|c|
-  .. table::
+.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+.. table::
 
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |00000|00   |rs2  |rs1  |110  |rd   |01100|11 |
-    +-----+-----+-----+-----+-----+-----+-----+---+
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |00000|00   |rs2  |rs1  |110  |rd   |01100|11 |
+  +-----+-----+-----+-----+-----+-----+-----+---+
 
 
 
-  :Format:
-    | or         rd,rs1,rs2
+:Format:
+  | or         rd,rs1,rs2
 
-  :Description:
-    | Performs bitwise OR on registers rs1 and rs2 and place the result in rd
+:Description:
+  | Performs bitwise OR on registers rs1 and rs2 and place the result in rd
 
-  :Implementation:
-    | x[rd] = x[rs1] | x[rs2]
+:Implementation:
+  | x[rd] = x[rs1] | x[rs2]
 
 - ori
 
-  .. tabularcolumns:: |c|c|c|c|c|c|c|c|
-  .. table::
+.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+.. table::
 
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |imm[11:0]        |rs1  |110  |rd   |00100|11 |
-    +-----+-----+-----+-----+-----+-----+-----+---+
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |imm[11:0]        |rs1  |110  |rd   |00100|11 |
+  +-----+-----+-----+-----+-----+-----+-----+---+
 
 
 
-  :Format:
-    | ori        rd,rs1,imm
+:Format:
+  | ori        rd,rs1,imm
 
-  :Description:
-    | Performs bitwise OR on register rs1 and the sign-extended 12-bit immediate and place the result in rd
+:Description:
+  | Performs bitwise OR on register rs1 and the sign-extended 12-bit immediate and place the result in rd
 
-  :Implementation:
-    | x[rd] = x[rs1] | sext(immediate)
+:Implementation:
+  | x[rd] = x[rs1] | sext(immediate)
 
 - slt
 
-  .. tabularcolumns:: |c|c|c|c|c|c|c|c|
-  .. table::
+.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+.. table::
 
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |00000|00   |rs2  |rs1  |010  |rd   |01100|11 |
-    +-----+-----+-----+-----+-----+-----+-----+---+
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |00000|00   |rs2  |rs1  |010  |rd   |01100|11 |
+  +-----+-----+-----+-----+-----+-----+-----+---+
 
 
 
-  :Format:
-    | slt        rd,rs1,rs2
+:Format:
+  | slt        rd,rs1,rs2
 
-  :Description:
-    | Place the value 1 in register rd if register rs1 is less than register rs2 when both are treated as signed numbers, else 0 is written to rd.
+:Description:
+  | Place the value 1 in register rd if register rs1 is less than register rs2 when both are treated as signed numbers, else 0 is written to rd.
 
-  :Implementation:
-    | x[rd] = x[rs1] <s x[rs2]
+:Implementation:
+  | x[rd] = x[rs1] <s x[rs2]
 
 - slti
 
-  set less than immediate
+set less than immediate
 
-  .. tabularcolumns:: |c|c|c|c|c|c|c|c|
-  .. table::
+.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+.. table::
 
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |imm[11:0]        |rs1  |010  |rd   |00100|11 |
-    +-----+-----+-----+-----+-----+-----+-----+---+
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |imm[11:0]        |rs1  |010  |rd   |00100|11 |
+  +-----+-----+-----+-----+-----+-----+-----+---+
 
 
 
-  :Format:
-    | slti       rd,rs1,imm
+:Format:
+  | slti       rd,rs1,imm
 
-  :Description:
-    | Place the value 1 in register rd if register rs1 is less than the signextended immediate when both are treated as signed numbers, else 0 is written to rd.
+:Description:
+  | Place the value 1 in register rd if register rs1 is less than the signextended immediate when both are treated as signed numbers, else 0 is written to rd.
 
-  :Implementation:
-    | x[rd] = x[rs1] <s sext(immediate)
+:Implementation:
+  | x[rd] = x[rs1] <s sext(immediate)
 
 - lw
 
-  .. tabularcolumns:: |c|c|c|c|c|c|c|c|
-  .. table::
+.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+.. table::
 
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
-    +-----+-----+-----+-----+-----+-----+-----+---+
-    |offset[11:0]     |rs1  |010  |rd   |00000|11 |
-    +-----+-----+-----+-----+-----+-----+-----+---+
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |31-27|26-25|24-20|19-15|14-12|11-7 |6-2  |1-0|
+  +-----+-----+-----+-----+-----+-----+-----+---+
+  |offset[11:0]     |rs1  |010  |rd   |00000|11 |
+  +-----+-----+-----+-----+-----+-----+-----+---+
 
 
 
-  :Format:
-    | lw         rd,offset(rs1)
+:Format:
+  | lw         rd,offset(rs1)
 
-  :Description:
-    | Loads a 32-bit value from memory and sign-extends this to XLEN bits before storing it in register rd.
+:Description:
+  | Loads a 32-bit value from memory and sign-extends this to XLEN bits before storing it in register rd.
 
-  :Implementation:
-    | x[rd] = sext(M[x[rs1] + sext(offset)][31:0])
+:Implementation:
+  | x[rd] = sext(M[x[rs1] + sext(offset)][31:0])
 
 - sw
 
-  .. tabularcolumns:: |c|c|c|c|c|c|c|c|
-  .. table::
+.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+.. table::
 
-    +-----+------+-----+-----+-----+-----------+-----+---+
-    |31-27|26-25 |24-20|19-15|14-12|11-7       |6-2  |1-0|
-    +-----+------+-----+-----+-----+-----------+-----+---+
-    |offset[11:5]|rs2  |rs1  |010  |offset[4:0]|01000|11 |
-    +-----+------+-----+-----+-----+-----------+-----+---+
+  +-----+------+-----+-----+-----+-----------+-----+---+
+  |31-27|26-25 |24-20|19-15|14-12|11-7       |6-2  |1-0|
+  +-----+------+-----+-----+-----+-----------+-----+---+
+  |offset[11:5]|rs2  |rs1  |010  |offset[4:0]|01000|11 |
+  +-----+------+-----+-----+-----+-----------+-----+---+
 
 
 
-  :Format:
-    | sw         rs2,offset(rs1)
+:Format:
+  | sw         rs2,offset(rs1)
 
-  :Description:
-    | Store 32-bit, values from the low bits of register rs2 to memory.
+:Description:
+  | Store 32-bit, values from the low bits of register rs2 to memory.
 
-  :Implementation:
-    | M[x[rs1] + sext(offset)] = x[rs2][31:0]
+:Implementation:
+  | M[x[rs1] + sext(offset)] = x[rs2][31:0]
 
 - beq
 
-  .. tabularcolumns:: |c|c|c|c|c|c|c|c|
-  .. table::
+.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+.. table::
 
-    +-----+---------+-----+-----+-----+--------------+-----+---+
-    |31-27|26-25    |24-20|19-15|14-12|11-7          |6-2  |1-0|
-    +-----+---------+-----+-----+-----+--------------+-----+---+
-    |offset[12|10:5]|rs2  |rs1  |000  |offset[4:1|11]|11000|11 |
-    +-----+---------+-----+-----+-----+--------------+-----+---+
+  +-----+---------+-----+-----+-----+--------------+-----+---+
+  |31-27|26-25    |24-20|19-15|14-12|11-7          |6-2  |1-0|
+  +-----+---------+-----+-----+-----+--------------+-----+---+
+  |offset[12|10:5]|rs2  |rs1  |000  |offset[4:1|11]|11000|11 |
+  +-----+---------+-----+-----+-----+--------------+-----+---+
 
 
 
-  :Format:
-    | beq        rs1,rs2,offset
+:Format:
+  | beq        rs1,rs2,offset
 
-  :Description:
-    | Take the branch if registers rs1 and rs2 are equal.
+:Description:
+  | Take the branch if registers rs1 and rs2 are equal.
 
-  :Implementation:
-    | if (x[rs1] == x[rs2]) pc += sext(offset)
+:Implementation:
+  | if (x[rs1] == x[rs2]) pc += sext(offset)
 
 
 --------------
