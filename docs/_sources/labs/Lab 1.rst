@@ -127,6 +127,7 @@ slti - lw, sw, beq
 TAs have prepare verilator testbench and some ``TEST_INSTRUCTION.txt``
 to grade your design. We will verify correctness by comparing register
 value, so 
+
 .. warning::
 
    Don’t modify register, instruction memory and CPU interface, or you will get 0 points. 
