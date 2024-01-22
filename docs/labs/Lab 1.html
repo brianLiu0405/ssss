@@ -363,11 +363,8 @@ if the rst signal is zero. And you should follow this design.</p>
 <p><a class="reference external" href="https://github.com/mortbopet/Ripes">Ripes</a> is a visual computer
 architecture simulator and assembly code editor built for the RISC-V
 instruction set architecture. Please read the document via hyperlink.</p>
-<figure class="align-default" id="id1">
-<img alt="2024-01-22 14-29-38 的螢幕擷圖" src="https://hackmd.io/_uploads/HkuwstjKT.png" />
-<figcaption>
-<p><span class="caption-text">2024-01-22 14-29-38 的螢幕擷圖</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
-</figcaption>
+<figure class="align-default">
+<img alt="Ripes" src="../_images/ripes.png" />
 </figure>
 <p>As the picture above, you can write you own assembly code then clock the
 processor, then check the right register values.</p>
@@ -400,34 +397,68 @@ should end with a new empty line.</p>
 <section id="architecture">
 <h3>Architecture<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h3>
 <p>You can follow the architecture graph to realize a single cycle CPU.
-<img alt="image1" src="https://hackmd.io/_uploads/Sy8dbBCsn.png" /></p>
+.. image:: images/singleArch.png</p>
 </section>
 <section id="instruction">
 <h3>Instruction<a class="headerlink" href="#instruction" title="Link to this heading">#</a></h3>
 <div class="info docutils container">
 <p>All operation are signed</p>
 </div>
-<p>Implement following instructions. RV32I ISA Layout is provided below. -
-add <img alt="image" src="https://hackmd.io/_uploads/S1U6FtsYa.png%20=80%x" /></p>
+<p>Implement following instructions. RV32I ISA Layout is provided below.</p>
 <ul class="simple">
-<li><p>addi <img alt="image2" src="https://hackmd.io/_uploads/ryiRcFitT.png%20=80%x" /></p></li>
-<li><p>sub <img alt="image3" src="https://hackmd.io/_uploads/ryHUqtjFa.png%20=80%x" /></p></li>
-<li><p>and <img alt="image4" src="https://hackmd.io/_uploads/rJQdcYiFa.png%20=80%x" /></p></li>
-<li><p>andi <img alt="image5" src="https://hackmd.io/_uploads/SJ7eiKjYT.png%20=80%x" /></p></li>
-<li><p>or <img alt="image6" src="https://hackmd.io/_uploads/BJZ9qYjta.png%20=80%x" /></p></li>
-<li><p>ori <img alt="image7" src="https://hackmd.io/_uploads/Hy3yiFiFa.png%20=80%x" /></p></li>
-<li><p>slt <img alt="image8" src="https://hackmd.io/_uploads/r1YSqKst6.png%20=80%x" /></p></li>
-<li><p>slti <img alt="image9" src="https://hackmd.io/_uploads/HJcbotjYT.png%20=80%x" /></p></li>
-<li><p>lw <img alt="image10" src="https://hackmd.io/_uploads/SJ0sctstT.png%20=80%x" /></p></li>
-<li><p>sw <img alt="image11" src="https://hackmd.io/_uploads/r1i25toYa.png%20=80%x" /></p></li>
-<li><p>beq <img alt="image12" src="https://hackmd.io/_uploads/BJIMoKiYp.png%20=80%x" /></p></li>
+<li><p>add</p></li>
 </ul>
+<a class="reference internal image-reference" href="../_images/add.png"><img alt="../_images/add.png" src="../_images/add.png" style="width: 577.6px; height: 232.0px;" /></a>
+<ul class="simple">
+<li><p>addi</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/addi.png"><img alt="../_images/addi.png" src="../_images/addi.png" style="width: 577.6px; height: 227.20000000000002px;" /></a>
+<ul class="simple">
+<li><p>sub</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/sub.png"><img alt="../_images/sub.png" src="../_images/sub.png" style="width: 577.6px; height: 232.0px;" /></a>
+<ul class="simple">
+<li><p>and</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/and.png"><img alt="../_images/and.png" src="../_images/and.png" style="width: 577.6px; height: 205.60000000000002px;" /></a>
+<ul class="simple">
+<li><p>andi</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/andi.png"><img alt="../_images/andi.png" src="../_images/andi.png" style="width: 577.6px; height: 227.20000000000002px;" /></a>
+<ul class="simple">
+<li><p>or</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/or.png"><img alt="../_images/or.png" src="../_images/or.png" style="width: 577.6px; height: 205.60000000000002px;" /></a>
+<ul class="simple">
+<li><p>ori</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/ori.png"><img alt="../_images/ori.png" src="../_images/ori.png" style="width: 577.6px; height: 227.20000000000002px;" /></a>
+<ul class="simple">
+<li><p>slt</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/slt.png"><img alt="../_images/slt.png" src="../_images/slt.png" style="width: 577.6px; height: 232.0px;" /></a>
+<ul class="simple">
+<li><p>slti</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/slti.png"><img alt="../_images/slti.png" src="../_images/slti.png" style="width: 577.6px; height: 227.20000000000002px;" /></a>
+<ul class="simple">
+<li><p>lw</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/lw.png"><img alt="../_images/lw.png" src="../_images/lw.png" style="width: 577.6px; height: 205.60000000000002px;" /></a>
+<ul class="simple">
+<li><p>sw</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/sw.png"><img alt="../_images/sw.png" src="../_images/sw.png" style="width: 577.6px; height: 205.60000000000002px;" /></a>
+<ul class="simple">
+<li><p>beq</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/beq.png"><img alt="../_images/beq.png" src="../_images/beq.png" style="width: 577.6px; height: 198.4px;" /></a>
 <hr class="docutils" />
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>You must follow this ISA table to implement</p>
 </div>
-<p><img alt="image13" src="https://hackmd.io/_uploads/HkbSaU1i3.png" /></p>
+<img alt="../_images/ISAtable.png" src="../_images/ISAtable.png" />
 </section>
 </section>
 <section id="requirement">

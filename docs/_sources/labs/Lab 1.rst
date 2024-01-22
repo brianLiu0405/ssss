@@ -34,10 +34,10 @@ Ripes
 architecture simulator and assembly code editor built for the RISC-V
 instruction set architecture. Please read the document via hyperlink.
 
-.. figure:: https://hackmd.io/_uploads/HkuwstjKT.png
-   :alt: 2024-01-22 14-29-38 的螢幕擷圖
+.. figure:: images/ripes.png
+   :alt: Ripes
 
-   2024-01-22 14-29-38 的螢幕擷圖
+   
 
 As the picture above, you can write you own assembly code then clock the
 processor, then check the right register values.
@@ -75,7 +75,7 @@ Architecture
 ~~~~~~~~~~~~
 
 You can follow the architecture graph to realize a single cycle CPU.
-|image1|
+.. image:: images/singleArch.png
 
 Instruction
 ~~~~~~~~~~~
@@ -84,30 +84,68 @@ Instruction
 
    All operation are signed
 
-Implement following instructions. RV32I ISA Layout is provided below. -
-add |image|
+Implement following instructions. RV32I ISA Layout is provided below.
 
--  addi |image2|
+- add
 
--  sub |image3|
+.. image:: images/add.png
+    :scale: 80%
 
--  and |image4|
+- addi
 
--  andi |image5|
+.. image:: images/addi.png
+    :scale: 80%
 
--  or |image6|
+- sub
 
--  ori |image7|
+.. image:: images/sub.png
+    :scale: 80%
 
--  slt |image8|
+- and
 
--  slti |image9|
+.. image:: images/and.png
+    :scale: 80%
 
--  lw |image10|
+- andi
 
--  sw |image11|
+.. image:: images/andi.png
+    :scale: 80%
 
--  beq |image12|
+- or
+
+.. image:: images/or.png
+    :scale: 80%
+
+- ori
+
+.. image:: images/ori.png
+    :scale: 80%
+
+- slt
+
+.. image:: images/slt.png
+    :scale: 80%
+
+- slti
+
+.. image:: images/slti.png
+    :scale: 80%
+
+- lw
+
+.. image:: images/lw.png
+    :scale: 80%
+
+- sw
+
+.. image:: images/sw.png
+    :scale: 80%
+
+- beq
+
+.. image:: images/beq.png
+    :scale: 80%
+
 
 --------------
 
@@ -115,7 +153,7 @@ add |image|
 
    You must follow this ISA table to implement
 
-|image13|
+.. image:: images/ISAtable.png
 
 Requirement
 -----------
@@ -153,17 +191,3 @@ Computer Organization and Design RISC-V Edition, CH4
 `RISC-VReader <http://riscvbook.com/>`__
 `riscv-isa-pages <https://msyksphinz-self.github.io/riscv-isadoc/html/rvi.html>`__
 
-.. |image1| image:: https://hackmd.io/_uploads/Sy8dbBCsn.png
-.. |image| image:: https://hackmd.io/_uploads/S1U6FtsYa.png%20=80%x
-.. |image2| image:: https://hackmd.io/_uploads/ryiRcFitT.png%20=80%x
-.. |image3| image:: https://hackmd.io/_uploads/ryHUqtjFa.png%20=80%x
-.. |image4| image:: https://hackmd.io/_uploads/rJQdcYiFa.png%20=80%x
-.. |image5| image:: https://hackmd.io/_uploads/SJ7eiKjYT.png%20=80%x
-.. |image6| image:: https://hackmd.io/_uploads/BJZ9qYjta.png%20=80%x
-.. |image7| image:: https://hackmd.io/_uploads/Hy3yiFiFa.png%20=80%x
-.. |image8| image:: https://hackmd.io/_uploads/r1YSqKst6.png%20=80%x
-.. |image9| image:: https://hackmd.io/_uploads/HJcbotjYT.png%20=80%x
-.. |image10| image:: https://hackmd.io/_uploads/SJ0sctstT.png%20=80%x
-.. |image11| image:: https://hackmd.io/_uploads/r1i25toYa.png%20=80%x
-.. |image12| image:: https://hackmd.io/_uploads/BJIMoKiYp.png%20=80%x
-.. |image13| image:: https://hackmd.io/_uploads/HkbSaU1i3.png

@@ -58,7 +58,7 @@ Full Adder & ALU
 Based on the circuit of the following adder, complete the circuit using
 Verilog, and create a testbench using Verilator to verify the circuit.
 
-.. image:: https://hackmd.io/_uploads/Sk7Otri9n.png
+.. image:: images/FA.png
 
 2. 4-bits ALU
 ~~~~~~~~~~~~~
@@ -89,7 +89,7 @@ circuit.
 
    All operations are **signed** arithmetic.
 
-.. image:: https://hackmd.io/_uploads/S1vnnvs93.png
+.. image:: images/ALU.png
 
 --------------
 
@@ -116,9 +116,10 @@ Using GTKwave to open **.vcd** file to check the waveform
    2.
    gtkwave xxx.vcd # open UI with waveform
 
-.. image:: https://hackmd.io/_uploads/Byh7iVCih.png
+.. image:: images/GTK.png
 
 Reference
 ---------
 
 -  `verilator用法 <https://itsembedded.com/dhd/verilator_1/>`__
+-  `verilog toturial <https://hdlbits.01xz.net/wiki/Problem_sets#Verilog_Language>`__
