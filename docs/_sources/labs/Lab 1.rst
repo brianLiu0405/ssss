@@ -88,7 +88,7 @@ Implement following instructions. RV32I ISA Layout is provided below.
 
 - add
 
-.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+
 .. table::
 
   +-----+-----+-----+-----+-----+-----+-----+---+
@@ -113,7 +113,7 @@ Implement following instructions. RV32I ISA Layout is provided below.
 
 add immediate
 
-.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+
 .. table::
 
   +-----+-----+-----+-----+-----+-----+-----+---+
@@ -135,7 +135,7 @@ add immediate
 
 - sub
 
-.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+
 .. table::
 
   +-----+-----+-----+-----+-----+-----+-----+---+
@@ -158,7 +158,7 @@ add immediate
 
 - and
 
-.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+
 .. table::
 
   +-----+-----+-----+-----+-----+-----+-----+---+
@@ -180,7 +180,7 @@ add immediate
 
 - andi
 
-.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+
 .. table::
 
   +-----+-----+-----+-----+-----+-----+-----+---+
@@ -202,7 +202,7 @@ add immediate
 
 - or
 
-.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+
 .. table::
 
   +-----+-----+-----+-----+-----+-----+-----+---+
@@ -224,7 +224,7 @@ add immediate
 
 - ori
 
-.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+
 .. table::
 
   +-----+-----+-----+-----+-----+-----+-----+---+
@@ -246,7 +246,7 @@ add immediate
 
 - slt
 
-.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+
 .. table::
 
   +-----+-----+-----+-----+-----+-----+-----+---+
@@ -270,7 +270,7 @@ add immediate
 
 set less than immediate
 
-.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+
 .. table::
 
   +-----+-----+-----+-----+-----+-----+-----+---+
@@ -292,7 +292,7 @@ set less than immediate
 
 - lw
 
-.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+
 .. table::
 
   +-----+-----+-----+-----+-----+-----+-----+---+
@@ -314,7 +314,7 @@ set less than immediate
 
 - sw
 
-.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+
 .. table::
 
   +-----+------+-----+-----+-----+-----------+-----+---+
@@ -336,7 +336,7 @@ set less than immediate
 
 - beq
 
-.. tabularcolumns:: |c|c|c|c|c|c|c|c|
+
 .. table::
 
   +-----+---------+-----+-----+-----+--------------+-----+---+
